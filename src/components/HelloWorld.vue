@@ -91,7 +91,16 @@ export default {
   name: "HelloWorld",
   props: {
     msg: String
+  },
+  data() {
+    return {
+      documents: []
+    }
+  },
+  async created() {
+    documents = await this.search();
   }
+
 };
 </script>
 
