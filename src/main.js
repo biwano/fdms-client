@@ -1,7 +1,12 @@
 import Vue from "vue";
+import Vuex from "vuex";
 import App from "./App.vue";
 import router from "./router";
 import Fdms from "./fdms-vue";
+import store from "./store";
+import "purecss/build/pure.css";
+
+
 
 Vue.config.productionTip = false;
 Vue.use(Fdms, {
@@ -15,5 +20,6 @@ Vue.use(Fdms, {
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

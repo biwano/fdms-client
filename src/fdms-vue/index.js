@@ -1,4 +1,5 @@
 import Http from "./http.js";
+
 var Fdms = {};
 Fdms.install = function(Vue, options) {
   // 1. add global method or property
