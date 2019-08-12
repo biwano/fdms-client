@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-  	{{ $store.state.user}}
+  <div>
+  	<h1>Login</h1>
     <form class="pure-form pure-form-stacked">
 	    <fieldset>
 	        <input type="text" placeholder="Login" v-model="login"/>
@@ -30,6 +30,13 @@ export default {
   		this.sign_in("*", this.login, this.password).then((user) => {
   			this.$store.commit("set_user", user);
   			this.$router.push('/');
+  			this.clearMessages();
+  		}).catch((e)=> {
+  			if (e.response.status == "401") {
+  				this.globalError("Invalid credentials");
+  				console.log(e.response.status);
+  				console.log(this.$store.state.messages);
+  			}
   		});
   	}
   }

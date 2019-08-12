@@ -1,14 +1,39 @@
+function toURI(base, tenant_id, params) {
+  var str = [];
+  params = Object.assign({tenant_id}, params)
+  for(var p in params){
+     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(params[p]));
+  }
+  return base + "?" + str.join("&");
+}
+
 export default function(Vue, options) {
   const axios = require("axios");
   let http = axios.create({
     baseURL: options.api.baseURL,
     timeout: options.api.timeout,
+    withCredentials: options.api.withCredentials,
     headers: options.api.headers
   });
+  let tenant_id;
   Vue.mixin({
     methods: {
-      search() {
-        return http.get("/search").then((response) => response.data);
+      _callHandler(handler, param) {
+        if (options.api[`on${handler}`]) {
+            options.api[`on${handler}`].bind(this)(param);
+        }
+      },
+      filter(tenant_id, params) {
+        if (tenant_id === undefined) return Promise.resolve([]);
+        let uri = toURI('/filter', tenant_id,params);
+        
+        return http.get(uri)
+          .then((response) => response.data)
+          .catch((e) => {
+            console.log(e);
+            this._callHandler(e.response.status, e)
+            return e;
+          });
       },
       sign_in(tenant, login, password) {
         http = axios.create({
@@ -20,7 +45,11 @@ export default function(Vue, options) {
             password: password
           }
         });
-        return http.get("/user").then((response) => response.data);
+        return this.get_user();
+      },
+      get_user() {
+        return http.get("/user")
+          .then((response) => response.data)
       }
     }
   });
