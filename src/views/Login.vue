@@ -27,16 +27,15 @@ export default {
   },
   methods: {
   	submit() {
+  		this.clear_messages();
   		this.sign_in("*", this.login, this.password).then((user) => {
   			this.$store.commit("set_user", user);
-  			this.$router.push('/');
-  			this.clearMessages();
+  			this.$router.push("/tenants");
   		}).catch((e)=> {
   			if (e.response.status == "401") {
-  				this.globalError("Invalid credentials");
-  				console.log(e.response.status);
-  				console.log(this.$store.state.messages);
+  				this.global_error("Invalid credentials");
   			}
+  			return e;
   		});
   	}
   }

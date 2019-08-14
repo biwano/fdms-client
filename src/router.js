@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login.vue";
 import Tenants from "./views/Tenants.vue";
+import CreateTenant from "./views/CreateTenant.vue";
 
 Vue.use(Router);
 
@@ -14,11 +15,8 @@ export default new Router({
       name: "home",
       component: Login
     },
-    {
-      path: "/tenants",
-      name: "tenants",
-      component: Tenants
-    },
+    { path: "/tenants", name: "tenants", component: Tenants },
+    { path: "/tenants/create", name: "create_tenant", component: CreateTenant },
     {
       path: "/login",
       name: "login",

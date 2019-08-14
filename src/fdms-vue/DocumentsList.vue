@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th v-for="column in columns">{{column.label}}</th>
+          <slot name="custom-headers"></slot>
         </tr>
       </thead>
       <tbody>
@@ -11,6 +12,7 @@
           <td v-for="column in columns">
             {{ doc[column.attribute] }}
           </td>
+          <slot name="custom-values" v-bind:doc="doc"></slot>
         </tr>
       </tbody>
     </table>

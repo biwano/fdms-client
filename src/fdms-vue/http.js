@@ -15,7 +15,6 @@ export default function(Vue, options) {
     withCredentials: options.api.withCredentials,
     headers: options.api.headers
   });
-  let tenant_id;
   Vue.mixin({
     methods: {
       _callHandler(handler, param) {
@@ -25,8 +24,8 @@ export default function(Vue, options) {
       },
       filter(tenant_id, params) {
         if (tenant_id === undefined) return Promise.resolve([]);
-        let uri = toURI('/filter', tenant_id,params);
-        
+        let uri = toURI("/filter", tenant_id,params);
+
         return http.get(uri)
           .then((response) => response.data)
           .catch((e) => {
@@ -49,7 +48,13 @@ export default function(Vue, options) {
       },
       get_user() {
         return http.get("/user")
-          .then((response) => response.data)
+          .then((response) => response.data);
+      },
+      create_tenant(tenant_id, drop) {
+        return http.post("/tenants", { tenant_id, "drop": drop });
+      },
+      delete_tenant(tenant_id) {
+        return http.delete(`/tenants/${tenant_id}`);
       }
     }
   });

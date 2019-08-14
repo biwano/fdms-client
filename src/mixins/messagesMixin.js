@@ -3,16 +3,23 @@ export default {
 		message(category, type, text) {
 			this.$store.commit("message", {category, type, text});
 		},
-		clearMessages(category) {
+		clear_messages(category) {
 			if (category === undefined) category = "global";
-			this.$store.commit("clearMessages", category);
+			this.$store.commit("clear_messages", category);
 		},
 		error(category, text) {
-			this.clearMessages(category);
+			this.clear_messages(category);
 			this.message(category, "error", text);
 		},
-		globalError(text) {
+		global_error(text) {
 			this.error("global", text);
+		},
+		info(category, text) {
+			this.clear_messages(category);
+			this.message(category, "info", text);
+		},
+		global_info(text) {
+			this.info("global", text);
 		}
 	}
 }

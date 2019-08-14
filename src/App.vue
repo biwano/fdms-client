@@ -3,8 +3,10 @@
     <!-- Menu toggle -->
     <div id="menu">
       <div>
+
         <ul>
           <li>    <span class="item heading">The Free DMS</span></li>
+          <li>    <span class="item heading">{{ $store.state.tenant_id}}</span></li>
               <hr/>
           <li>  <router-link to="/tenants"  class="item link">
             <font-awesome-icon icon="home" />Tenants
@@ -16,15 +18,12 @@
         </ul>
       </div>
     </div>
-    <!--
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-  -->
     <div id="main">
       <messages category="global"></messages>
-      <router-view />
+      <span v-if="$store.state.busy" class="spinner">
+        <font-awesome-icon icon="cog" spin />
+      </span>
+    <router-view />
     </div>
   </div>
 </template>
@@ -57,7 +56,7 @@ export default {
 #menu {
   float:left;
   height:100vh;
-  background-color:#022;
+  background-color:#033;
   margin-right: 15px;
 
 }
@@ -91,6 +90,7 @@ li a {
 }
 li a:hover {
    background-color:#033; 
+   color:white;
 }
 li a.router-link-exact-active {
    background-color:#044; 
@@ -100,5 +100,18 @@ li {
 }
 .pure-button-primary {
   background-color: #044 !important;
+}
+a {
+  color:#022;
+}
+a:hover {
+  color:#044;
+}
+.big-icon {
+  font-size: 50px;
+}
+.spinner {
+  font-size: 50px;
+  float:right;  
 }
 </style>

@@ -1,26 +1,31 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import bus from "./bus.js"
+import config from "./config";
 
 Vue.use(Vuex);
 
-function message(messages, category, type, text) {
-
-}
 export default new Vuex.Store({
   state: {
     user: null,
     messages: {},
     tenant_id: undefined,
+    busy: false
   },
   mutations: {
-    set_user (state, user) {
+    busy(state) {
+      state.busy = true;
+    },
+    available(state) {
+      state.busy = false;
+    },
+    set_user(state, user) {
       state.user = user;
-      if (user.is_fdms_admin) state.tenant_id = "fdms";
+      if (user.is_fdms_admin) state.tenant_id = config.api.tenant_master;
       else state.tenant_id = user.tenant_id;
       bus.$emit("logged_in", user);
     },
-    clearMessages(state, category) {
+    clear_messages(state, category) {
 		state.messages[category] = { messages: [], options: {} };
 		state.messages = Object.assign({}, state.messages);
     },
