@@ -10,7 +10,8 @@ export default new Vuex.Store({
     user: null,
     messages: {},
     tenant_id: undefined,
-    busy: false
+    busy: false,
+    bus
   },
   mutations: {
     busy(state) {

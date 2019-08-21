@@ -12,7 +12,8 @@ import {
   faHome,
   faSignOutAlt,
   faTrash,
-  faCog
+  faCog,
+  faFolder
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -37,8 +38,11 @@ Vue.mixin({
     }
   },
   computed: {
-    tenant_id: function() {
+    tenant_id() {
       return this.$store.state.tenant_id;
+    },
+    bus() {
+      return this.$store.state.bus;
     }
   }
 });
@@ -46,7 +50,8 @@ library.add(faPlusCircle,
   faHome,
   faSignOutAlt,
   faTrash,
-  faCog);
+  faCog,
+  faFolder);
 
 
 Vue.component("font-awesome-icon", FontAwesomeIcon)

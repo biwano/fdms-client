@@ -2,21 +2,7 @@
   <div id="layout">
     <!-- Menu toggle -->
     <div id="menu">
-      <div>
-
-        <ul>
-          <li>    <span class="item heading">The Free DMS</span></li>
-          <li>    <span class="item heading">{{ $store.state.tenant_id}}</span></li>
-              <hr/>
-          <li>  <router-link to="/tenants"  class="item link">
-            <font-awesome-icon icon="home" />Tenants
-          </router-link></li>
-              <hr/>
-          <li><router-link to="/login"  class="item link">
-                      <font-awesome-icon icon="sign-out-alt" />Logout
-              </router-link></li>
-        </ul>
-      </div>
+      <navigation></navigation>
     </div>
     <div id="main">
       <messages category="global"></messages>
@@ -29,11 +15,13 @@
 </template>
 <script>
 import Messages from "@/components/Messages.vue";
+import Nav from "@/components/Nav.vue";
  
 export default {
   name: "App",
   components: {
-    'messages': Messages
+    'messages': Messages,
+    'navigation': Nav
   },
   created() {
     this.get_user().then((user) => {
@@ -66,37 +54,10 @@ export default {
 }
 body {
   color:#022;
-  font-family: 'Open Sans';
+  font-family: Helvetica,Arial,sans-serif;
 }
 h1 {
   margin-top:0 !important;
-}
-ul {
-  padding:0px;
-  padding-top: 5px;
-  margin:0;
-}
-.heading {
-  text-transform: uppercase;
-}
-.item {
-  padding:10px;
-  display:block;
-}
-li a {
-  text-transform: uppercase;
-  text-decoration:none;
-  color: white;
-}
-li a:hover {
-   background-color:#033; 
-   color:white;
-}
-li a.router-link-exact-active {
-   background-color:#044; 
-}
-li {
-    color: white;
 }
 .pure-button-primary {
   background-color: #044 !important;

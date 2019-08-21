@@ -27,7 +27,6 @@
 <script>
 // @ is an alias to /src
 import DocumentsList from "@/fdms-vue/DocumentsList.vue";
-import bus from "@/bus"
 export default {
   name: "tenants",
   data() {
@@ -38,7 +37,7 @@ export default {
   },
   created() {
   	this.load();
-    bus.$on("logged_in", this.load);
+    this.bus.$on("logged_in", this.load);
   },
   methods: {
   	async load() {
@@ -57,11 +56,6 @@ export default {
   },
   components: {
     "documents-list": DocumentsList
-  },
-  computed : {
-    tenant_id: function() { 
-      return this.$store.state.tenant_id; 
-    }
   }
 };
 </script>
