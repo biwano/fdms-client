@@ -27,6 +27,7 @@
 <script>
 // @ is an alias to /src
 import DocumentsList from "@/fdms-vue/DocumentsList.vue";
+import C from "@/fdms-vue/constants.js";
 export default {
   name: "tenants",
   data() {
@@ -41,7 +42,9 @@ export default {
   },
   methods: {
   	async load() {
-    	this.docs = await this.filter(this.tenant_id, { __schema_id: "__tenant"});
+      var body = {};
+      body[C.SCHEMA_ID] = C.TENANT_SCHEMA_ID;
+    	this.docs = await this.filter(this.tenant_id, body);
   	},
     delete_tenant_(tenant_id) {
       this.busy_while(
@@ -49,7 +52,7 @@ export default {
             this.global_info(`Tenant ${tenant_id} deleted`);
             this.load();
         }).catch((e) => {
-            this.global_error("Could not delete tenant");          
+            this.global_error("Could not delete tenant");
         })
       );
     },

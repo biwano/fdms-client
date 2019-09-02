@@ -1,8 +1,12 @@
+import C from "./constants.js";
+
 function toURI(base, tenant_id, params) {
   var str = [];
-  params = Object.assign({"__tenant_id": tenant_id}, params)
-  for(var p in params){
-     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(params[p]));
+  var obj = {};
+  obj[C.TENANT_ID] = tenant_id;
+  params = Object.assign(obj, params);
+  for (var p in params) {
+    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(params[p]));
   }
   return base + "?" + str.join("&");
 }
@@ -30,7 +34,7 @@ export default function(Vue, options) {
           .then((response) => response.data)
           .catch((e) => {
             console.log(e);
-            this._callHandler(e.response.status, e)
+            this._callHandler(e.response.status, e);
             return e;
           });
       },
