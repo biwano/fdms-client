@@ -41,7 +41,7 @@ export default {
   },
   methods: {
   	async load() {
-    	this.docs = await this.filter(this.tenant_id, { schema_id: "tenant"});
+    	this.docs = await this.filter(this.tenant_id, { __schema_id: "__tenant"});
   	},
     delete_tenant_(tenant_id) {
       this.busy_while(

@@ -1,6 +1,6 @@
 function toURI(base, tenant_id, params) {
   var str = [];
-  params = Object.assign({tenant_id}, params)
+  params = Object.assign({"__tenant_id": tenant_id}, params)
   for(var p in params){
      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(params[p]));
   }
@@ -24,7 +24,7 @@ export default function(Vue, options) {
       },
       filter(tenant_id, params) {
         if (tenant_id === undefined) return Promise.resolve([]);
-        let uri = toURI("/filter", tenant_id,params);
+        let uri = toURI("/filter", tenant_id, params);
 
         return http.get(uri)
           .then((response) => response.data)

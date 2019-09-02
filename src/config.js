@@ -3,7 +3,7 @@ export default {
     baseURL: "http://localhost:5000/",
     timeout: 30000,
     headers: { "X-Custom-Header": "foobar" },
-    tenant_master: "fdms",
+    tenant_master: "__root",
     tenant_all_id: "*",
     withCredentials: true,
     on401() {
