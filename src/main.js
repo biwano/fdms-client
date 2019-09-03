@@ -38,7 +38,7 @@ Vue.mixin({
     }
   },
   computed: {
-    tenant_id() {
+    user_tenant_id() {
       return this.$store.state.tenant_id;
     },
     bus() {

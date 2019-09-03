@@ -1,28 +1,25 @@
 <template>
   <div>
   	<h1>Browse</h1>
+    <tree-root :tenant_id="user_tenant_id" :path="path"></tree-root>
  </div>
 </template>
 
 <script>
+import TreeRoot from "@/fdms-vue/TreeRoot.vue";
 
 export default {
-  name: "browse",
+  name: "Browse",
   data() {
     return {
-      docs: [],
+      path: undefined,
     }
   },
   created() {
-    this.load();
-    this.bus.$on("logged_in", this.load);
-  },
-  methods: {
-    async load() {
-      this.docs = await this.filter(this.tenant_id, { schema_id: "tenant"});
-    }
+    this.bus.$on("logged_in", () => this.path="/");
   },
   components: {
+    TreeRoot
   },
 };
 </script>

@@ -44,11 +44,11 @@ export default {
   	async load() {
       var body = {};
       body[C.SCHEMA_ID] = C.TENANT_SCHEMA_ID;
-    	this.docs = await this.filter(this.tenant_id, body);
+    	this.docs = await this.fdms_filter(this.user_tenant_id, body);
   	},
     delete_tenant_(tenant_id) {
       this.busy_while(
-        this.delete_tenant(tenant_id).then(() => {
+        this.fdms_delete_tenant(tenant_id).then(() => {
             this.global_info(`Tenant ${tenant_id} deleted`);
             this.load();
         }).catch((e) => {

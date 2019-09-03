@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <nav-entry>{{ $store.state.tenant_id}}</nav-entry>
+      <nav-entry>{{ user_tenant_id}}</nav-entry>
       <nav-entry>The Free DMS</nav-entry>
       <hr/>
       <nav-entry to="/browse" icon="folder">Browse</nav-entry>

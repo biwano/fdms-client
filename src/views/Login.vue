@@ -28,7 +28,7 @@ export default {
   methods: {
   	submit() {
   		this.clear_messages();
-  		this.sign_in("*", this.login, this.password).then((user) => {
+  		this.fdms_sign_in("*", this.login, this.password).then((user) => {
   			this.$store.commit("set_user", user);
   			this.$router.push("/tenants");
   		}).catch((e)=> {

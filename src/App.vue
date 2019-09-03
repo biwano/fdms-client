@@ -24,13 +24,13 @@ export default {
     'navigation': Nav
   },
   created() {
-    this.get_user().then((user) => {
+    this.fdms_get_user().then((user) => {
       this.$store.commit("set_user", user);
     });
   },
   methods: {
     submit() {
-      this.sign_in("*", this.login, this.password).then((user) => {
+      this.fdms_sign_in("*", this.login, this.password).then((user) => {
         this.$store.commit("set_user", user);
         this.$router.push('/');
       }).catch(()=> {

@@ -31,7 +31,7 @@ export default {
   methods: {
   	submit() {
       this.busy_while(
-    		this.create_tenant(this.id, this.drop).then(() => {
+    		this.fdms_create_tenant(this.id, this.drop).then(() => {
             this.global_info(`Tenant ${this.id} created`);
             this.$router.push("/tenants")
     		}).catch((e)=> {
