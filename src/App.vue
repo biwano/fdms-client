@@ -24,19 +24,9 @@ export default {
     'navigation': Nav
   },
   created() {
-    this.fdms_get_user().then((user) => {
-      this.$store.commit("set_user", user);
-    });
+    this.fdms_get_user();
   },
   methods: {
-    submit() {
-      this.fdms_sign_in("*", this.login, this.password).then((user) => {
-        this.$store.commit("set_user", user);
-        this.$router.push('/');
-      }).catch(()=> {
-        this.$store.commit()
-      });
-    }
   }
 };
 </script>

@@ -1,3 +1,5 @@
+import bus from "./bus.js";
+
 function toURI(base, tenant_id, params) {
   var strs = [];
   var str=""
@@ -18,7 +20,10 @@ export default function(Vue, options) {
     withCredentials: options.api.withCredentials,
     headers: options.api.headers
   });
+  let fdms_tenant_id = undefined;
+  let fdms_initialized = false;
   Vue.mixin({
+
     methods: {
       _callHandler(handler, param) {
         if (options.api[`on${handler}`]) {
@@ -32,12 +37,13 @@ export default function(Vue, options) {
             throw(e);
           });
       },
-      fdms_filter(tenant_id, params) {
-        let uri = toURI("/filter", tenant_id, params);
+      fdms_filter(params) {
+        console.log("filter");
+        let uri = toURI("/filter", fdms_tenant_id, params);
         return this._handle(http.get(uri))
          
       },
-      fdms_sign_in(tenant_id, login, password) {
+/*      fdms_sign_in(tenant_id, login, password) {
         http = axios.create({
           baseURL: options.api.baseURL,
           timeout: options.api.timeout,
@@ -48,10 +54,17 @@ export default function(Vue, options) {
           }
         });
         return this.get_user();
-      },
+      },*/
       fdms_get_user() {
         return http.get("/auth")
-          .then((response) => response.data);
+          .then((response) => { 
+            var user = response.data;
+            fdms_initialized = true;
+            if (user.is_fdms_admin) fdms_tenant_id = options.api.tenant_master;
+            else fdms_tenant_id = user.tenant_id;
+            this.bus.$emit("logged_in", user);
+            return user;
+          });
       },
       fdms_create_tenant(tenant_id, drop) {
         return this._handle(http.post("/tenants", { tenant_id, "drop": drop }));
@@ -59,9 +72,15 @@ export default function(Vue, options) {
       fdms_delete_tenant(tenant_id) {
         return this._handle(http.delete(`/tenants/${tenant_id}`));
       },
-      fdms_get(tenant_id, id, params) {
+      fdms_get(id, params) {
         if (!id.startsWith("/")) id = `/${id}`;
-        return this._handle(http.get(toURI(`/documents${id}`, tenant_id, params)));
+        return this._handle(http.get(toURI(`/documents${id}`, fdms_tenant_id, params)));
+      },
+      fdms_after_init(func) {
+        if (fdms_initialized) func();
+        else {
+          this.bus.$on("logged_in", func);
+        }
       }
     }
   });

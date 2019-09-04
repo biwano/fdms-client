@@ -16,7 +16,7 @@ export default {
     }
   },
   created() {
-    this.bus.$on("logged_in", () => this.path="/");
+    this.fdms_after_init(() => this.path="/");
   },
   components: {
     TreeRoot

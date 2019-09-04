@@ -30,10 +30,12 @@ export default {
       this.load();
     }
   },
+  created() {
+    this.load();
+  },
   methods: {
     async load() {
-      this.doc = await this.fdms_get(this.tenant_id, this.path);
-      console.log(this.doc);
+      this.doc = await this.fdms_get(this.path);
       this.label = this.doc[C.PATH_SEGMENT]
     }
   }

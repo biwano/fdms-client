@@ -28,6 +28,7 @@
 // @ is an alias to /src
 import DocumentsList from "@/fdms-vue/DocumentsList.vue";
 import C from "@/fdms-vue/constants.js";
+import bus from "@/fdms-vue/bus.js";
 export default {
   name: "tenants",
   data() {
@@ -37,14 +38,13 @@ export default {
   	}
   },
   created() {
-  	this.load();
-    this.bus.$on("logged_in", this.load);
+  	this.fdms_after_init(this.load);
   },
   methods: {
   	async load() {
       var body = {};
       body[C.SCHEMA_ID] = C.TENANT_SCHEMA_ID;
-    	this.docs = await this.fdms_filter(this.user_tenant_id, body);
+    	this.docs = await this.fdms_filter(body);
   	},
     delete_tenant_(tenant_id) {
       this.busy_while(
