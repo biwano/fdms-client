@@ -1,9 +1,12 @@
 <template>
   <div v-if="doc">
-    <div >
-      {{ label }}
+    <font-awesome-icon v-if="!local_expanded" icon="plus-circle" v-on:click="expand"/>
+    <font-awesome-icon v-if="local_expanded" icon="minus-circle" v-on:click="unexpand"/>
+    {{ label }}
+
+    <div v-if="local_expanded" v-for="child in children" class="children">
+      <tree-root :tenant_id="user_tenant_id" :path="fdms_doc_path(child)" :expanded="true"></tree-root>
     </div>
-    
   </div>
 </template>
 
@@ -14,13 +17,19 @@ export default {
   name: "TreeRoot",
   data() {
     return {
-      doc: {},
-      label: ""
+      doc: undefined,
+      label: "",
+      local_expanded: false,
+      children: undefined,
     }
   },
   props: {
     tenant_id: String,
+    expanded:false,
     path: String,
+  },
+  created() {
+    this.local_expanded = this.expanded;
   },
   watch: {
     tenant_id() {
@@ -35,8 +44,22 @@ export default {
   },
   methods: {
     async load() {
-      this.doc = await this.fdms_get(this.path);
-      this.label = this.doc[C.PATH_SEGMENT]
+      if (this.path !== undefined) {
+        this.doc = await this.fdms_get(this.path);
+        this.label = this.fdms_doc_label(this.doc);
+        this.load_children();
+      }
+    },
+    expand() {
+      this.local_expanded = true;
+      this.load_children();
+    },
+    unexpand() {
+      this.local_expanded = false;
+    },
+    async load_children() {
+      //if (this.children === undefined) 
+        this.children = await this.fdms_get_children(this.path);
     }
   }
 };
@@ -44,4 +67,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.children {
+  margin-left:5px;
+}
 </style>

@@ -1,4 +1,5 @@
 import bus from "./bus.js";
+import C from "./constants.js";
 
 function toURI(base, tenant_id, params) {
   var strs = [];
@@ -75,6 +76,16 @@ export default function(Vue, options) {
       fdms_get(id, params) {
         if (!id.startsWith("/")) id = `/${id}`;
         return this._handle(http.get(toURI(`/documents${id}`, fdms_tenant_id, params)));
+      },
+      fdms_get_children(id, params) {
+        params = Object.assign({}, params, {"modifiers": "children"});
+        return this.fdms_get(id, params);
+      },
+      fdms_doc_label(doc) {
+        return doc[C.PATH_SEGMENT];
+      },
+      fdms_doc_path(doc) {
+        return doc[C.PATH];
       },
       fdms_after_init(func) {
         if (fdms_initialized) func();

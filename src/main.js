@@ -9,6 +9,7 @@ import "./mixins";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faPlusCircle,
+  faMinusCircle,
   faHome,
   faSignOutAlt,
   faTrash,
@@ -46,7 +47,9 @@ Vue.mixin({
     }
   }
 });
-library.add(faPlusCircle,
+library.add(
+  faPlusCircle,
+  faMinusCircle,
   faHome,
   faSignOutAlt,
   faTrash,
