@@ -1,7 +1,13 @@
 <template>
-  <div v-if="doc">
-    <font-awesome-icon v-if="!local_expanded" icon="plus-circle" v-on:click="expand"/>
-    <font-awesome-icon v-if="local_expanded" icon="minus-circle" v-on:click="unexpand"/>
+  <div v-if="doc" class="node_layout">
+    <span v-if="!local_expanded" v-on:click="expand">
+      <font-awesome-icon icon="caret-down" class="caret"/>
+      <font-awesome-icon  icon="folder"/>
+    </span>
+    <span v-if="local_expanded" v-on:click="unexpand">
+      <font-awesome-icon icon="caret-right" class="caret"/>
+      <font-awesome-icon icon="folder-open"/>
+    </span>
     {{ label }}
 
     <div v-if="local_expanded" v-for="child in children" class="children">
@@ -59,7 +65,9 @@ export default {
     },
     async load_children() {
       //if (this.children === undefined) 
-        this.children = await this.fdms_get_children(this.path);
+        var params = {}
+        //params[C.FACETS] = C.FACET_SHOW_IN_TREE;
+        this.children = await this.fdms_get_children(this.path, params);
     }
   }
 };
@@ -68,6 +76,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .children {
-  margin-left:5px;
+  margin-left:15px;
+}
+.caret {
+  margin-right:5px;
+}
+.node_layout {
+  margin-bottom:2px;
 }
 </style>

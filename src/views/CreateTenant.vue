@@ -22,8 +22,8 @@ export default {
   name: "create_tenant",
   data() {
   	return {
-  		id: "",
-      drop:false
+  		id: "__root",
+      drop:true
   	}
   },
   components: {

@@ -9,14 +9,16 @@
       <span v-if="$store.state.busy" class="spinner">
         <font-awesome-icon icon="cog" spin />
       </span>
-    <router-view />
+      <div id="route_content">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
 <script>
 import Messages from "@/components/Messages.vue";
 import Nav from "@/components/Nav.vue";
- 
+
 export default {
   name: "App",
   components: {
@@ -30,18 +32,18 @@ export default {
   }
 };
 </script>
+
 <style>
 #menu {
-  float:left;
+  flex: 0 1 150px;
   height:100vh;
   background-color:#033;
-  margin-right: 15px;
-
 }
 #main {
-  float:left;
-  padding-left: 5px;
-  padding-right: 5px;
+  flex:1 1 auto;
+}
+#route_content {
+  padding:5px;
 }
 body {
   color:#022;
@@ -49,6 +51,10 @@ body {
 }
 h1 {
   margin-top:0 !important;
+}
+th {
+  background-color:#033;
+  color:white;
 }
 .pure-button-primary {
   background-color: #044 !important;
@@ -65,5 +71,11 @@ a:hover {
 .spinner {
   font-size: 50px;
   float:right;  
+}
+</style>
+<style>
+#layout {
+  display:flex;
+  flex-direction:row;
 }
 </style>

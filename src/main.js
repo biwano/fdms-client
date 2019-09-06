@@ -14,7 +14,10 @@ import {
   faSignOutAlt,
   faTrash,
   faCog,
-  faFolder
+  faFolder,
+  faFolderOpen,
+  faCaretDown,
+  faCaretRight
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -54,10 +57,13 @@ library.add(
   faSignOutAlt,
   faTrash,
   faCog,
-  faFolder);
+  faFolder,
+  faFolderOpen,
+  faCaretDown,
+  faCaretRight
+);
 
-
-Vue.component("font-awesome-icon", FontAwesomeIcon)
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 new Vue({
   router,
   store,

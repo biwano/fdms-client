@@ -5,9 +5,9 @@ import config from "./config";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+var store = new Vuex.Store({
   state: {
-    user: null,
+    user: undefined,
     messages: {},
     busy: false,
     bus
@@ -19,13 +19,9 @@ export default new Vuex.Store({
     available(state) {
       state.busy = false;
     },
-    /*
     set_user(state, user) {
       state.user = user;
-      if (user.is_fdms_admin) state.tenant_id = config.api.tenant_master;
-      else state.tenant_id = user.tenant_id;
-      bus.$emit("logged_in", user);
-    },*/
+    },
     clear_messages(state, category) {
   		state.messages[category] = { messages: [], options: {} };
   		state.messages = Object.assign({}, state.messages);
@@ -35,5 +31,15 @@ export default new Vuex.Store({
   		state.messages[payload.category].messages.push({ type: payload.type, text: payload.text});
 		  state.messages = Object.assign({}, state.messages);
     }
+  },
+  getters: {
+    user: state => {
+      return state.user !== undefined ? state.user : {};
+    }
   }
-})
+});
+bus.$on("logged_in", user => {
+  store.commit("set_user", user);
+});
+
+export default store;
