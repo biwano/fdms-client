@@ -1,15 +1,15 @@
 <template>
   <div class="node_layout">
-    <div v-for="(child, index) in children" class="clickable">
+    <div v-for="(child, index) in children">
       <span v-if="!child.___expanded" v-on:click="expand(child, index)">
-        <font-awesome-icon icon="caret-down" class="icon"/>
-        <font-awesome-icon  icon="folder" class="icon"/>
+        <font-awesome-icon icon="caret-down" class="icon clickable"/>
+        <font-awesome-icon  icon="folder" class="icon clickable"/>
       </span>
       <span v-if="child.___expanded" v-on:click="unexpand(child, index)">
-        <font-awesome-icon icon="caret-right" class="icon"/>
-        <font-awesome-icon icon="folder-open" class="icon"/>
+        <font-awesome-icon icon="caret-right" class="icon clickable"/>
+        <font-awesome-icon icon="folder-open" class="icon clickable"/>
       </span>
-      <span @click="select(child)" :class="{ selected:isSelected(child) }">{{ child.___label }}</span>
+      <span @click="select(child)" :class="{ selected:isSelected(child) }"  class="clickable">{{ child.___label }}</span>
       </a>
       <div v-if="child.___expanded"  class="children">
         <tree-root :tenant_id="user_tenant_id" :doc_id="fdms_doc_path(child, index)" v-model="selected"></tree-root>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {FACETS, FACET_SHOW_IN_TREE, PATH} from "./constants.js";
+import { FACETS, FACET_SHOW_IN_TREE, PATH } from "./constants.js";
 
 export default {
   name: "TreeRoot",

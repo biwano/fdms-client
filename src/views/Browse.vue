@@ -1,11 +1,10 @@
 <template>
   <div v-if="root_path !== undefined">
   	<h1>Browse</h1>
+    <hr/>
     <div class="browse_layout">
       <div class="tree">
-        <div class="tree_in">
           <tree-root :doc_id="root_path" v-model="doc"></tree-root>
-        </div>
       </div>
       <div class="content">
         <document-detail :doc_id="path"></document-detail>
@@ -36,7 +35,7 @@ export default {
   },
   computed: {
     path() {
-      return this.doc !== undefined ? this.doc[PATH] : undefined;
+      return this.doc !== undefined ? this.doc[PATH] : "/";
     },
     version() {
       return undefined;
@@ -46,15 +45,17 @@ export default {
 </script>
 <style scoped>
 .browse_layout {
-  display:flex;
+  display: grid;
+  grid-template-columns: minmax(max-content, 0.2fr) 1fr;
+  grid-gap: 5px;
 }
 .content {
-  flex:1 1 auto;
+  display: table-cell;
+  padding: 5px;
 }
 .tree {
-  height:100vh;
-  flex:0 1 200px;
-  padding:5px;
+  display: table-cell;
+  padding: 5px;
 }
 .tree_in {
   display: block;

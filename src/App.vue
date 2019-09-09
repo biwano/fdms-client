@@ -78,6 +78,10 @@ a:hover {
 .clickable:hover {
   color:#044;
 }
+hr {
+  margin-block-end: 0px;
+  margin-block-start: 0px;
+}
 </style>
 <style>
 #layout {

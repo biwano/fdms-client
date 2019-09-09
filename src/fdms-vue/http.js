@@ -1,5 +1,6 @@
 import bus from "./bus.js";
 import C from "./constants.js";
+import cache from "js-cache";
 
 function toURI(base, tenant_id, params) {
   var strs = [];
@@ -24,7 +25,6 @@ export default function(Vue, options) {
   let fdms_tenant_id = undefined;
   let fdms_initialized = false;
   Vue.mixin({
-
     methods: {
       _callHandler(handler, param) {
         if (options.api[`on${handler}`]) {
@@ -83,6 +83,30 @@ export default function(Vue, options) {
         more_params[C.MODIFIERS] = "children";
         params = Object.assign({}, params, more_params);
         return this.fdms_get(id, params);
+      },
+      from_cache(key, func) {
+        if (cache.get(key) !== undefined) return cache.get(key);
+        else {
+          var value = func();
+          if (options.api.user_cache) cache.set(key, value, options.api.TTL);
+          return value;
+        }
+      },
+      async fdms_get_view_config(config_id) {
+        return this.from_cache(`view|${config_id}`, () => {
+          return this.fdms_get(`/meta/ui/views/${config_id}`).then((doc) => {
+            return doc ? doc.config : {};
+          });
+        });
+      },
+      async fdms_get_schema(schema_id) {
+        return this.from_cache(`schema|${schema_id}`, async () => {
+          var schema = await this.fdms_get(`/meta/schemas/${schema_id}`);
+          /*var default_config = await this.fdms_get_schema_config("__default");
+          var config = await this.fdms_get_schema_config(schema_id);
+          schema.___config = Object.assign({}, default_config, config);*/
+          return schema;
+        });
       },
       fdms_doc_label(doc) {
         return doc[C.PATH_SEGMENT];
