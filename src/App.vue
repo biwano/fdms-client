@@ -72,6 +72,12 @@ a:hover {
   font-size: 50px;
   float:right;  
 }
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover {
+  color:#044;
+}
 </style>
 <style>
 #layout {

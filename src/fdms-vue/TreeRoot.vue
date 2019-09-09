@@ -1,73 +1,79 @@
 <template>
-  <div v-if="doc" class="node_layout">
-    <span v-if="!local_expanded" v-on:click="expand">
-      <font-awesome-icon icon="caret-down" class="caret"/>
-      <font-awesome-icon  icon="folder"/>
-    </span>
-    <span v-if="local_expanded" v-on:click="unexpand">
-      <font-awesome-icon icon="caret-right" class="caret"/>
-      <font-awesome-icon icon="folder-open"/>
-    </span>
-    {{ label }}
-
-    <div v-if="local_expanded" v-for="child in children" class="children">
-      <tree-root :tenant_id="user_tenant_id" :path="fdms_doc_path(child)" :expanded="true"></tree-root>
+  <div class="node_layout">
+    <div v-for="(child, index) in children" class="clickable">
+      <span v-if="!child.___expanded" v-on:click="expand(child, index)">
+        <font-awesome-icon icon="caret-down" class="icon"/>
+        <font-awesome-icon  icon="folder" class="icon"/>
+      </span>
+      <span v-if="child.___expanded" v-on:click="unexpand(child, index)">
+        <font-awesome-icon icon="caret-right" class="icon"/>
+        <font-awesome-icon icon="folder-open" class="icon"/>
+      </span>
+      <span @click="select(child)" :class="{ selected:isSelected(child) }">{{ child.___label }}</span>
+      </a>
+      <div v-if="child.___expanded"  class="children">
+        <tree-root :tenant_id="user_tenant_id" :doc_id="fdms_doc_path(child, index)" v-model="selected"></tree-root>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import C from "./constants.js";
+import {FACETS, FACET_SHOW_IN_TREE, PATH} from "./constants.js";
 
 export default {
   name: "TreeRoot",
   data() {
     return {
-      doc: undefined,
-      label: "",
-      local_expanded: false,
       children: undefined,
-    }
+      selected: undefined
+    };
   },
   props: {
-    tenant_id: String,
-    expanded:false,
-    path: String,
-  },
-  created() {
-    this.local_expanded = this.expanded;
+    doc_id: String,
+    value: Object
   },
   watch: {
-    tenant_id() {
+    doc_id() {
       this.load();
     },
-    path() {
-      this.load();
+    selected(child) {
+      this.select(child);
+    },
+    value(value) {
+      this.selected = value;
     }
   },
   created() {
     this.load();
   },
   methods: {
+    expand(child, index) {
+      child.___expanded = true;
+      this.$set(this.children, index, child);
+    },
+    unexpand(child, index) {
+      child.___expanded = false;
+      this.$set(this.children, index, child);
+    },
+    select(child) {
+      this.selected = child;
+      this.$emit("input", child);
+    },
+    isSelected(child) {
+      return this.selected !== undefined && this.selected[PATH] == child[PATH];
+    },
     async load() {
-      if (this.path !== undefined) {
-        this.doc = await this.fdms_get(this.path);
-        this.label = this.fdms_doc_label(this.doc);
-        this.load_children();
+      if (this.children === undefined) {
+        var params = {};
+        params[FACETS] = FACET_SHOW_IN_TREE;
+        this.children = await this.fdms_get_children(this.doc_id, params);
+        for (var index in this.children) {
+          var child = this.children[index];
+          child.___expanded = false;
+          child.___label = this.fdms_doc_label(child);
+        }
       }
-    },
-    expand() {
-      this.local_expanded = true;
-      this.load_children();
-    },
-    unexpand() {
-      this.local_expanded = false;
-    },
-    async load_children() {
-      //if (this.children === undefined) 
-        var params = {}
-        //params[C.FACETS] = C.FACET_SHOW_IN_TREE;
-        this.children = await this.fdms_get_children(this.path, params);
     }
   }
 };
@@ -76,12 +82,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .children {
-  margin-left:15px;
+  margin-left:14px;
 }
-.caret {
+.icon {
   margin-right:5px;
 }
 .node_layout {
   margin-bottom:2px;
+}
+.selected {
+  color: #066;
+  font-weight: bold;
 }
 </style>
