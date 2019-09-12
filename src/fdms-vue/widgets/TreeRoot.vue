@@ -9,20 +9,22 @@
         <font-awesome-icon icon="caret-right" class="icon clickable"/>
         <font-awesome-icon icon="folder-open" class="icon clickable"/>
       </span>
-      <span @click="select(child)" :class="{ selected:isSelected(child) }"  class="clickable">{{ child.___label }}</span>
+      <span @click="select_ui(child)" :class="{ selected:isSelected(child) }"  class="clickable">{{ child.___label }}</span>
       </a>
       <div v-if="child.___expanded"  class="children">
-        <tree-root :tenant_id="user_tenant_id" :doc_id="fdms_doc_path(child, index)" v-model="selected"></tree-root>
+        <tree-root :tenant_id="user_tenant_id" :doc="fdms_doc_path(child, index)" v-model="selected"></tree-root>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { FACETS, FACET_SHOW_IN_TREE, PATH } from "./constants.js";
+import { FACETS, FACET_SHOW_IN_TREE, PATH } from "../constants.js";
+import doc_mixin from "../mixins/doc.js";
 
 export default {
   name: "TreeRoot",
+  mixins: [doc_mixin],
   data() {
     return {
       children: undefined,
@@ -30,13 +32,9 @@ export default {
     };
   },
   props: {
-    doc_id: String,
     value: Object
   },
   watch: {
-    doc_id() {
-      this.load();
-    },
     selected(child) {
       this.select(child);
     },
@@ -60,19 +58,21 @@ export default {
       this.selected = child;
       this.$emit("input", child);
     },
+    select_ui(child) {
+      this.fdms_navigate(child);
+      this.select(child);
+    },
     isSelected(child) {
       return this.selected !== undefined && this.selected[PATH] == child[PATH];
     },
     async load() {
-      if (this.children === undefined) {
-        var params = {};
-        params[FACETS] = FACET_SHOW_IN_TREE;
-        this.children = await this.fdms_get_children(this.doc_id, params);
-        for (var index in this.children) {
-          var child = this.children[index];
-          child.___expanded = false;
-          child.___label = this.fdms_doc_label(child);
-        }
+      var params = {};
+      params[FACETS] = FACET_SHOW_IN_TREE;
+      this.children = await this.fdms_get_children(this.doc, params);
+      for (var index in this.children) {
+        var child = this.children[index];
+        child.___expanded = false;
+        child.___label = this.fdms_doc_label(child);
       }
     }
   }

@@ -16,6 +16,7 @@
         <td>
           <a href="#">
             <font-awesome-icon icon="trash" class="icon-link" v-on:click="delete_tenant_(slotProps.doc.id)"/>
+            <font-awesome-icon icon="sync-alt" class="icon-link" v-on:click="refresh_tenant_(slotProps.doc.id)"/>
           </a>
 
         </td>
@@ -26,7 +27,7 @@
 
 <script>
 // @ is an alias to /src
-import DocumentsList from "@/fdms-vue/DocumentsList.vue";
+import DocumentsList from "@/fdms-vue/widgets/DocumentsList.vue";
 import C from "@/fdms-vue/constants.js";
 import bus from "@/fdms-vue/bus.js";
 export default {
@@ -34,7 +35,7 @@ export default {
   data() {
   	return {
   		docs: [],
-  		columns:[{"label": "Identifier", "attribute": "id"}]
+  		columns:["id"]
   	}
   },
   created() {
@@ -53,6 +54,16 @@ export default {
             this.load();
         }).catch((e) => {
             this.global_error("Could not delete tenant");
+        })
+      );
+    },
+    refresh_tenant_(tenant_id) {
+      this.busy_while(
+        this.fdms_refresh_tenant(tenant_id).then(() => {
+            this.global_info(`Tenant ${tenant_id} refreshed`);
+            this.load();
+        }).catch((e) => {
+            this.global_error("Could not refresh tenant");
         })
       );
     },

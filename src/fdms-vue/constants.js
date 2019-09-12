@@ -7,6 +7,7 @@ export var FACETS = "__facets";
 export var FACET_SHOW_IN_TREE = "__show_in_tree";
 export var MODIFIERS = "__modifiers";
 export var VIEW_CONFIG = "__view_config";
+export var DEFAULT = "__default";
 
 export default {
   TENANT_ID,

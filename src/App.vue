@@ -22,11 +22,17 @@ import Nav from "@/components/Nav.vue";
 export default {
   name: "App",
   components: {
-    'messages': Messages,
-    'navigation': Nav
+    "messages": Messages,
+    "navigation": Nav
   },
   created() {
     this.fdms_get_user();
+    this.fdms_log("init");
+    this.fdms_bus().$on("navigate", path => {
+      path = this.fdms_as_path(path);
+      this.fdms_log("navigate", path);
+      this.$router.push({ name: "browse", params: { path } });
+    });
   },
   methods: {
   }
@@ -77,6 +83,9 @@ a:hover {
 }
 .clickable:hover {
   color:#044;
+}
+.icon-link {
+  margin-right:15px;
 }
 hr {
   margin-block-end: 0px;

@@ -15,6 +15,7 @@ export default new Router({
     { path: "/login", name: "login", component: Login },
     { path: "/tenants", name: "tenants", component: Tenants },
     { path: "/tenants/create", name: "create_tenant", component: CreateTenant },
-    { path: "/browse", name: "browse", component: Browse },
+    { path: "/browse/:path*", name: "browse", component: Browse },
+
   ]
 });

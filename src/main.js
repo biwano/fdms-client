@@ -17,7 +17,8 @@ import {
   faFolder,
   faFolderOpen,
   faCaretDown,
-  faCaretRight
+  faCaretRight,
+  faSyncAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -60,7 +61,8 @@ library.add(
   faFolder,
   faFolderOpen,
   faCaretDown,
-  faCaretRight
+  faCaretRight,
+  faSyncAlt
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

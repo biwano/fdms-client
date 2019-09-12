@@ -6,8 +6,8 @@ export default {
     tenant_master: "__root",
     tenant_all_id: "*",
     withCredentials: true,
-    TTL: 10000,
-    use_cache: false,
+    cache_ttl: 10000,
+    use_cache: true,
     on401() {
       this.globalError("Please authenticate");
       this.$router.push("/login");

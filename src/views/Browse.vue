@@ -2,21 +2,23 @@
   <div v-if="root_path !== undefined">
   	<h1>Browse</h1>
     <hr/>
+    <breadcrumb :doc="doc"></breadcrumb>
+    <hr/>
     <div class="browse_layout">
       <div class="tree">
-          <tree-root :doc_id="root_path" v-model="doc"></tree-root>
+          <tree-root :doc="root_path"></tree-root>
       </div>
       <div class="content">
-        <document-detail :doc_id="path"></document-detail>
+        <document :doc="doc"></document>
       </div>
     </div>
  </div>
 </template>
 
 <script>
-import TreeRoot from "@/fdms-vue/TreeRoot.vue";
-import DocumentDetail from "@/fdms-vue/DocumentDetail.vue";
-import { PATH } from "@/fdms-vue/constants";
+import TreeRoot from "@/fdms-vue/widgets/TreeRoot.vue";
+import Document from "@/fdms-vue/widgets/Document.vue";
+import Breadcrumb from "@/fdms-vue/widgets/BreadCrumb.vue";
 
 export default {
   name: "Browse",
@@ -26,19 +28,25 @@ export default {
       doc: undefined
     };
   },
-  created() {
-    this.fdms_after_init(() => (this.root_path = "/"));
-  },
   components: {
     TreeRoot,
-    DocumentDetail
+    Document,
+    Breadcrumb
   },
-  computed: {
-    path() {
-      return this.doc !== undefined ? this.doc[PATH] : "/";
-    },
-    version() {
-      return undefined;
+  watch: {
+    $route(route) {
+      this.update(route.params.path);
+    }
+  },
+  created() {
+    this.fdms_after_init(() => { 
+      this.root_path = "/";
+      this.update(this.$route.params.path);
+    });
+  },
+  methods: {
+    update(path) {
+      this.doc = path || "/";
     }
   }
 };
