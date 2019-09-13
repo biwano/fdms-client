@@ -1,23 +1,33 @@
 <template>
-  <span v-if="config && children">
-      <documents-list :docs="children" :columns="config.columns"></documents-list>
+  <span>
+    <span v-if="children">
+        <documents-list :docs="children" :columns="config.columns"></documents-list>
+    </span>
   </span>
 </template>
 
 <script>
-import widget_mixin from "./doc_mixin.js";
+import widget_mixin from "./widget_mixin.js";
 
 export default {
   name: "WidgetChildren",
   mixins: [widget_mixin],
-  components: { DocumentsList:() => import("./DocumentsList.vue") },
+  components: { DocumentsList: () => import("./DocumentsList.vue") },
   data() {
     return {
       children: []
     };
   },
+  created() {
+    this.load();
+  },
+  watch: {
+    doc() {
+      this.load();
+    }
+  },
   methods: {
-    async widget_load() {
+    async load() {
       this.children = await this.fdms_get_children(this.doc);
     }
   }

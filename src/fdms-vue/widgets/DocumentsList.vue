@@ -9,9 +9,8 @@
       </thead>
       <tbody>
         <tr v-for="item in items">
-          
           <td v-for="widget in item.widgets">
-            <widget-proxy :widget="widget" :doc="item.doc" :schema="item.schema"></widget-proxy>
+            <widget-proxy :widget="widget" :doc="item.doc" v-model="item.doc[widget.config.model]"></widget-proxy>
           </td>
           <slot name="custom-values" v-bind:doc="item.doc"></slot>
         </tr>

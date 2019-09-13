@@ -63,37 +63,39 @@ export default {
     fdms_configure_widget(widget, schema) {
       if (typeof widget !== "object") {
         widget = {
-          type: "auto",
-          config: { model: widget }
+          auto: widget,
+          config: { }
         };
       }
       widget = Object.assign({}, widget);
       widget.config = Object.assign({}, widget.config);
-      if (widget.type === "auto") {
-        var model = widget.config.model;
+      if (widget.auto) {
+        var model = widget.auto;
+        widget.config.model = model;
         if (schema && schema.properties) {
           var prop = schema.properties[model];
           while (prop.alias) {
             prop = schema.properties[prop.alias];
           }
           if (prop) {
-            widget.type = widgets_auto_props[prop.type];
+            if (!widget.type) widget.type = widgets_auto_props[prop.type];
             if (prop.list === true) {
               widget = {
-                type: "list",
+                type: "array",
                 label: model,
                 config: {
-                  widgets_config: widget
+                  model,
+                  widget
                 }
               };
-            } 
+            }
+            this.fdms_trace("Widget auto configured", widget, prop);
           } else this.fdms_warn("Auto mapping failed: Unknown property :", widget.config.model, "for schema :", schema["id"]);
         }
         if (!widget.label) {
           widget.label = model;
         }
       }
-      this.fdms_trace("Widget configured", widget);
       return widget;
     }
   }

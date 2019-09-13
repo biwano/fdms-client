@@ -6,7 +6,7 @@ export default {
     tenant_master: "__root",
     tenant_all_id: "*",
     withCredentials: true,
-    cache_ttl: 10000,
+    cache_ttl: 100000,
     use_cache: true,
     on401() {
       this.globalError("Please authenticate");

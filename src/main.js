@@ -4,22 +4,9 @@ import router from "./router";
 import Fdms from "./fdms-vue";
 import store from "./store";
 import config from "./config";
+import "./icons.js";
 
 import "./mixins";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faPlusCircle,
-  faMinusCircle,
-  faHome,
-  faSignOutAlt,
-  faTrash,
-  faCog,
-  faFolder,
-  faFolderOpen,
-  faCaretDown,
-  faCaretRight,
-  faSyncAlt
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import "purecss/build/pure.css";
@@ -43,27 +30,11 @@ Vue.mixin({
     }
   },
   computed: {
-    user_tenant_id() {
-      return this.$store.state.tenant_id;
-    },
     bus() {
       return this.$store.state.bus;
     }
   }
 });
-library.add(
-  faPlusCircle,
-  faMinusCircle,
-  faHome,
-  faSignOutAlt,
-  faTrash,
-  faCog,
-  faFolder,
-  faFolderOpen,
-  faCaretDown,
-  faCaretRight,
-  faSyncAlt
-);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 new Vue({

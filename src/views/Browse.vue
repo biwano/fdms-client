@@ -45,8 +45,9 @@ export default {
     });
   },
   methods: {
-    update(path) {
-      this.doc = path || "/";
+    async update(path) {
+      path = path || "/";
+      this.doc = await this.fdms_get(path);
     }
   }
 };

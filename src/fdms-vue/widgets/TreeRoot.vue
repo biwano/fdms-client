@@ -12,7 +12,7 @@
       <span @click="select_ui(child)" :class="{ selected:isSelected(child) }"  class="clickable">{{ child.___label }}</span>
       </a>
       <div v-if="child.___expanded"  class="children">
-        <tree-root :tenant_id="user_tenant_id" :doc="fdms_doc_path(child, index)" v-model="selected"></tree-root>
+        <tree-root :doc="fdms_doc_path(child, index)" v-model="selected"></tree-root>
       </div>
     </div>
   </div>

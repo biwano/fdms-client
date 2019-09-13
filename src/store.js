@@ -9,15 +9,15 @@ var store = new Vuex.Store({
   state: {
     user: undefined,
     messages: {},
-    busy: false,
+    busy: 0,
     bus
   },
   mutations: {
     busy(state) {
-      state.busy = true;
+      state.busy++;
     },
     available(state) {
-      state.busy = false;
+      state.busy--;
     },
     set_user(state, user) {
       state.user = user;
