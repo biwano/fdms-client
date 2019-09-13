@@ -1,4 +1,4 @@
-import Http from "./http.js";
+import fdms from "./mixins/fdms.js";
 
 var Fdms = {};
 Fdms.install = function(Vue, options) {
@@ -17,7 +17,7 @@ Fdms.install = function(Vue, options) {
 */
   // 3. inject some component options
 
-  Http(Vue, options);
+  fdms(Vue, options);
 
   // 4. add an instance method
   /*  Vue.prototype.$myMethod = function (methodOptions) {

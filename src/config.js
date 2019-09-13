@@ -12,5 +12,8 @@ export default {
       this.globalError("Please authenticate");
       this.$router.push("/login");
     }
+  },
+  log: {
+    error: true, warn: true, info: true, debug: true, trace: true
   }
 };

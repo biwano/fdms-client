@@ -5,13 +5,12 @@
 </template>
 
 <script>
-import widget_mixin from "../mixins/doc.js";
-import DocumentsList from "./DocumentsList.vue";
+import widget_mixin from "./doc_mixin.js";
 
 export default {
   name: "WidgetChildren",
   mixins: [widget_mixin],
-  components: { DocumentsList },
+  components: { DocumentsList:() => import("./DocumentsList.vue") },
   data() {
     return {
       children: []

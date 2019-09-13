@@ -3,45 +3,66 @@
     <table class="pure-table pure-table-horizontal">
       <thead>
         <tr>
-          <th v-for="column in columns_">{{column.label}}</th>
+          <th v-for="widget in columns_">{{ widget.label}}</th>
           <slot name="custom-headers"></slot>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="doc in docs">
-          <td v-for="column in columns_">
-            <span v-if="column.link" class="clickable" @click="fdms_navigate(doc)">{{ doc[column.model] }}</span>
-            <span v-if="!column.link">{{ doc[column.model] }}</span>
+        <tr v-for="item in items">
+          
+          <td v-for="widget in item.widgets">
+            <widget-proxy :widget="widget" :doc="item.doc" :schema="item.schema"></widget-proxy>
           </td>
-          <slot name="custom-values" v-bind:doc="doc"></slot>
+          <slot name="custom-values" v-bind:doc="item.doc"></slot>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
 <script>
+
+import WidgetProxy from "./WidgetProxy.vue";
+
 export default {
   name: "DocumentsList",
+  components: { WidgetProxy },
   props: {
     docs: Array,
     columns: Array
+  },
+  data() {
+    return {
+      items: []
+    };
+  },
+  watch: {
+    async docs() {
+      this.items = [];
+      if (this.docs) {
+        for (var i in this.docs) {
+          var schema = await this.fdms_get_schema_full(this.docs[i]);
+          var widgets = [];
+          for (var j in this.columns) {
+            widgets.push(this.fdms_configure_widget(this.columns[j], schema));
+          }
+          var item = {
+            doc: this.docs[i],
+            schema,
+            widgets
+          };
+          this.items.push(item);
+        }
+      }
+    }
   },
   computed: {
     columns_() {
       var columns = [];
       for (var i in this.columns) {
-        var col = this.columns[i];
-        if (typeof col === "object") {
-          if (!col.label) col.label = col.model;
-          if (!col.link) col.link = false;
-          columns.push(col);
-        } else columns.push({
-          "label" : col,
-          "model" : col,
-          "link": false
-        });
+        var col = this.fdms_configure_widget(this.columns[i]);
+        columns.push(col);
       }
+      this.fdms_debug("headers", columns);
       return columns;
     }
   }

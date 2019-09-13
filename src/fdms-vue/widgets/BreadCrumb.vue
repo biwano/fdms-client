@@ -14,7 +14,7 @@
 
 <script>
 import { PATH } from "../constants.js";
-import doc_mixin from "../mixins/doc.js";
+import doc_mixin from "./doc_mixin.js";
 
 export default {
   name: "Breadcrumb",

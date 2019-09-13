@@ -27,10 +27,9 @@ export default {
   },
   created() {
     this.fdms_get_user();
-    this.fdms_log("init");
+    this.fdms_info("init");
     this.fdms_bus().$on("navigate", path => {
       path = this.fdms_as_path(path);
-      this.fdms_log("navigate", path);
       this.$router.push({ name: "browse", params: { path } });
     });
   },

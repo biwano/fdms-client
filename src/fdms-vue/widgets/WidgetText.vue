@@ -7,11 +7,10 @@
 </template>
 
 <script>
-import doc_model_widget_mixin from "../mixins/doc_model.js";
+import doc_model_widget_mixin from "./doc_model_mixin.js";
 
 export default {
   name: "WidgetText",
   mixins: [doc_model_widget_mixin]
-
 };
 </script>
