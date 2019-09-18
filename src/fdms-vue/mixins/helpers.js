@@ -5,6 +5,7 @@ import {
   PATH_SEGMENT,
   ID
 } from "../constants.js";
+import Mustache from "mustache";
 
 var widgets_auto_props = {
   keyword: "text",
@@ -74,29 +75,32 @@ export default {
         widget.config.model = model;
         if (schema && schema.properties) {
           var prop = schema.properties[model];
-          while (prop.alias) {
-            prop = schema.properties[prop.alias];
-          }
           if (prop) {
+            while (prop.alias) {
+              prop = schema.properties[prop.alias];
+            }
             if (!widget.type) widget.type = widgets_auto_props[prop.type];
             if (prop.list === true) {
               widget = {
                 type: "array",
-                label: model,
                 config: {
                   model,
-                  widget
+                  widget,
+                  label: model
                 }
               };
             }
             this.fdms_trace("Widget auto configured", widget, prop);
           } else this.fdms_warn("Auto mapping failed: Unknown property :", widget.config.model, "for schema :", schema["id"]);
         }
-        if (!widget.label) {
-          widget.label = model;
+        if (!widget.config.label) {
+          widget.config.label = model;
         }
       }
       return widget;
+    },
+    fdms_interpolate(template, data) {
+      return Mustache.render(template,data);
     }
   }
 };

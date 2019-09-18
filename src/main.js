@@ -1,13 +1,12 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
+import router from "./router.js";
 import Fdms from "./fdms-vue";
-import store from "./store";
-import config from "./config";
+import store from "./store.js";
+import config from "./config.js";
 import "./icons.js";
 
 import "./mixins";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import "purecss/build/pure.css";
 
@@ -36,7 +35,6 @@ Vue.mixin({
   }
 });
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
 new Vue({
   router,
   store,

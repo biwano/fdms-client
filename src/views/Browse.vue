@@ -6,7 +6,7 @@
     <hr/>
     <div class="browse_layout">
       <div class="tree">
-          <tree-root :doc="root_path"></tree-root>
+          <tree-root :doc="root_path" v-model="doc"></tree-root>
       </div>
       <div class="content">
         <document :doc="doc"></document>

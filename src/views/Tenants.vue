@@ -15,8 +15,8 @@
       <template v-slot:custom-values="slotProps">
         <td>
           <a href="#">
-            <font-awesome-icon icon="trash" class="icon-link" v-on:click="delete_tenant_(slotProps.doc.id)"/>
-            <font-awesome-icon icon="sync-alt" class="icon-link" v-on:click="refresh_tenant_(slotProps.doc.id)"/>
+            <font-awesome-icon icon="trash" class="fdms-icon" v-on:click="delete_tenant_(slotProps.doc.id)"/>
+            <font-awesome-icon icon="sync-alt" class="fdms-icon" v-on:click="refresh_tenant_(slotProps.doc.id)"/>
           </a>
 
         </td>

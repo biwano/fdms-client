@@ -5,7 +5,7 @@
     </span>
     <span v-for="path in paths">
       <span>{{ path.separator }}</span>
-      <span @click="navigate(path.target)" class="clickable">
+      <span @click="navigate(path.target)" class="fdms-clickable">
       {{ path.segment }} 
     </span>
     </span>

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="doc_ && view_config" class="pure-g">
-    <div v-for="widget in layout" class="pure-u-1-2">
+  <div v-if="doc_ && view_config">
+    <div v-for="widget in layout">
       <b v-if="widget.label">{{widget.label}} : </b>
       <widget-proxy :widget="widget" v-model="doc_[widget.config.model]" :doc="doc_" ></widget-proxy>
       <br/>

@@ -77,14 +77,8 @@ a:hover {
   font-size: 50px;
   float:right;  
 }
-.clickable {
-  cursor: pointer;
-}
-.clickable:hover {
+.fdms-clickable:hover {
   color:#044;
-}
-.icon-link {
-  margin-right:15px;
 }
 hr {
   margin-block-end: 0px;

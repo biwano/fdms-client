@@ -3,7 +3,7 @@
     <table class="pure-table pure-table-horizontal">
       <thead>
         <tr>
-          <th v-for="widget in columns_">{{ widget.label}}</th>
+          <th v-for="widget in columns_">{{ widget.config.label}}</th>
           <slot name="custom-headers"></slot>
         </tr>
       </thead>
@@ -36,12 +36,14 @@ export default {
   },
   watch: {
     async docs() {
+      var items = [];
       this.items = [];
       if (this.docs) {
         for (var i in this.docs) {
           var schema = await this.fdms_get_schema_full(this.docs[i]);
           var widgets = [];
-          for (var j in this.columns) {
+          for (var j = 0; j < this.columns.length; j++) {
+            this.fdms_debug(j, this.columns);
             widgets.push(this.fdms_configure_widget(this.columns[j], schema));
           }
           var item = {
@@ -49,9 +51,10 @@ export default {
             schema,
             widgets
           };
-          this.items.push(item);
+          items.push(item);
         }
       }
+      this.items = items;
     }
   },
   computed: {

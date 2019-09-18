@@ -2,14 +2,14 @@
   <div class="node_layout">
     <div v-for="(child, index) in children">
       <span v-if="!child.___expanded" v-on:click="expand(child, index)">
-        <font-awesome-icon icon="caret-down" class="icon clickable"/>
-        <font-awesome-icon  icon="folder" class="icon clickable"/>
+        <font-awesome-icon icon="caret-down" class="fdms-icon fdms-clickable"/>
+        <font-awesome-icon  icon="folder" class="fdms-icon fdms-clickable"/>
       </span>
       <span v-if="child.___expanded" v-on:click="unexpand(child, index)">
-        <font-awesome-icon icon="caret-right" class="icon clickable"/>
-        <font-awesome-icon icon="folder-open" class="icon clickable"/>
+        <font-awesome-icon icon="caret-right" class="fdms-icon fdms-clickable"/>
+        <font-awesome-icon icon="folder-open" class="fdms-icon fdms-clickable"/>
       </span>
-      <span @click="select_ui(child)" :class="{ selected:isSelected(child) }"  class="clickable">{{ child.___label }}</span>
+      <span @click="select_ui(child)" :class="{ selected:isSelected(child) }"  class="fdms-clickable">{{ child.___label }}</span>
       </a>
       <div v-if="child.___expanded"  class="children">
         <tree-root :doc="fdms_doc_path(child, index)" v-model="selected"></tree-root>
@@ -40,10 +40,12 @@ export default {
     },
     value(value) {
       this.selected = value;
+      this.autoexpand();
     }
   },
   created() {
     this.load();
+    this.autoexpand();
   },
   methods: {
     expand(child, index) {
@@ -54,6 +56,15 @@ export default {
       child.___expanded = false;
       this.$set(this.children, index, child);
     },
+    autoexpand() {
+      if (this.selected && this.children) {
+        this.children.forEach((child)=> {
+          if (this.selected[PATH].startsWith(`${child[PATH]}/`)) {
+            this.expand(child);
+          }
+        });  
+      }
+    },
     select(child) {
       this.selected = child;
       this.$emit("input", child);
@@ -63,7 +74,7 @@ export default {
       this.select(child);
     },
     isSelected(child) {
-      return this.selected !== undefined && this.selected[PATH] == child[PATH];
+      return this.value !== undefined && this.value[PATH] == child[PATH];
     },
     async load() {
       var params = {};
@@ -74,6 +85,7 @@ export default {
         child.___expanded = false;
         child.___label = this.fdms_doc_label(child);
       }
+      this.autoexpand();
     }
   }
 };

@@ -10,12 +10,12 @@
 <script>
 import WidgetText from "./WidgetText.vue";
 import WidgetChildren from "./WidgetChildren.vue";
+import WidgetList from "./WidgetList.vue";
 import WidgetArray from "./WidgetArray.vue";
-import WidgetUser from "./WidgetUser.vue";
 
 export default {
   name: "WidgetProxy",
-  components: { WidgetText, WidgetChildren, WidgetArray, WidgetUser },
+  components: { WidgetText, WidgetChildren, WidgetArray, WidgetList },
   props: {
     value: [Object, String, Array],
     doc: Object,
