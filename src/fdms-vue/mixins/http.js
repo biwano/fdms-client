@@ -1,12 +1,11 @@
 import bus from "../bus.js";
 
-import { 
+import {
   VIEW_CONFIG,
   SCHEMA_ID,
   DEFAULT,
   PATH,
-  PATH_SEGMENT,
-  MODIFIERS 
+  MODIFIERS
 } from "../constants.js";
 import state from "./state.js";
 import cache from "js-cache";

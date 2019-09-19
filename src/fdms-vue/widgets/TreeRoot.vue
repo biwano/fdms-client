@@ -12,7 +12,7 @@
       <span @click="select_ui(child)" :class="{ selected:isSelected(child) }"  class="fdms-clickable">{{ child.___label }}</span>
       </a>
       <div v-if="child.___expanded"  class="children">
-        <tree-root :doc="fdms_doc_path(child, index)" v-model="selected"></tree-root>
+        <tree-root :doc_id="fdms_doc_path(child, index)" v-model="selected"></tree-root>
       </div>
     </div>
   </div>
@@ -34,6 +34,9 @@ export default {
   props: {
     value: Object
   },
+  created() {
+    this.selected = this.value;
+  },
   watch: {
     selected(child) {
       this.select(child);
@@ -42,10 +45,6 @@ export default {
       this.selected = value;
       this.autoexpand();
     }
-  },
-  created() {
-    this.load();
-    this.autoexpand();
   },
   methods: {
     expand(child, index) {
@@ -58,11 +57,11 @@ export default {
     },
     autoexpand() {
       if (this.selected && this.children) {
-        this.children.forEach((child)=> {
+        this.children.forEach(child => {
           if (this.selected[PATH].startsWith(`${child[PATH]}/`)) {
             this.expand(child);
           }
-        });  
+        });
       }
     },
     select(child) {

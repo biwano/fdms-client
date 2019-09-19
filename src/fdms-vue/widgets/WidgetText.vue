@@ -18,7 +18,6 @@ export default {
   methods: {
     click() {
       // link is True go to doc
-      this.fdms_debug(this.config.link);
       if (this.is_link == true) {
         if (this.config.link == true) {
           this.fdms_navigate(this.doc);

@@ -3,7 +3,8 @@ import state from "./state.js";
 import {
   PATH,
   PATH_SEGMENT,
-  ID
+  PARENT_UUID,
+  DOCUMENT_UUID
 } from "../constants.js";
 import Mustache from "mustache";
 
@@ -28,7 +29,7 @@ export default {
       }
     },
     fdms_log_be(level, args) {
-      var final_args = [`[FDMS] ${level} <${this.$options.name}>`];
+      var final_args = [`[FDMS] ${level} <${this.$options.name}>(${this._uid})`];
       for (var i in args) {
         final_args.push(args[i]);
       }
@@ -70,6 +71,12 @@ export default {
       }
       widget = Object.assign({}, widget);
       widget.config = Object.assign({}, widget.config);
+      if (widget.type == "children") {
+        widget.type = "list";
+        widget.config.filter = {};
+        widget.config.filter[PARENT_UUID] = `{{doc.${DOCUMENT_UUID}}}`;
+        this.fdms_trace("'Children' widget auto configured", widget, prop);
+      }
       if (widget.auto) {
         var model = widget.auto;
         widget.config.model = model;
@@ -90,8 +97,8 @@ export default {
                 }
               };
             }
-            this.fdms_trace("Widget auto configured", widget, prop);
-          } else this.fdms_warn("Auto mapping failed: Unknown property :", widget.config.model, "for schema :", schema["id"]);
+            this.fdms_trace("'auto' widget configured. schema: ", schema.id, "model: ", model, "type: ", prop.type, "=>", widget.type, widget);
+          } else this.fdms_warn("Auto mapping failed: Unknown property :", widget.config.model, "for schema :", schema.id);
         }
         if (!widget.config.label) {
           widget.config.label = model;

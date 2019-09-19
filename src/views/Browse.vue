@@ -2,14 +2,14 @@
   <div v-if="root_path !== undefined">
   	<h1>Browse</h1>
     <hr/>
-    <breadcrumb :doc="doc"></breadcrumb>
+    <breadcrumb :doc_id="doc"></breadcrumb>
     <hr/>
     <div class="browse_layout">
       <div class="tree">
-          <tree-root :doc="root_path" v-model="doc"></tree-root>
+          <tree-root :doc_id="root_path" v-model="doc"></tree-root>
       </div>
       <div class="content">
-        <document :doc="doc"></document>
+        <document :doc_id="doc"></document>
       </div>
     </div>
  </div>
@@ -39,7 +39,7 @@ export default {
     }
   },
   created() {
-    this.fdms_after_init(() => { 
+    this.fdms_after_init(() => {
       this.root_path = "/";
       this.update(this.$route.params.path);
     });

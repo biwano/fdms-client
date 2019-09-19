@@ -3,7 +3,7 @@
     <table class="pure-table pure-table-horizontal">
       <thead>
         <tr>
-          <th v-for="widget in columns_">{{ widget.config.label}}</th>
+          <th v-for="widget in headers">{{ widget.config.label}}</th>
           <slot name="custom-headers"></slot>
         </tr>
       </thead>
@@ -29,13 +29,19 @@ export default {
     docs: Array,
     columns: Array
   },
-  data() {
-    return {
-      items: []
-    };
+  computed: {
+    headers() {
+      var headers = [];
+      for (var i in this.columns) {
+        var col = this.fdms_configure_widget(this.columns[i]);
+        headers.push(col);
+      }
+      this.fdms_trace("Headers configured", headers);
+      return headers;
+    }
   },
-  watch: {
-    async docs() {
+  asyncComputed: {
+    async items() {
       var items = [];
       this.items = [];
       if (this.docs) {
@@ -43,7 +49,6 @@ export default {
           var schema = await this.fdms_get_schema_full(this.docs[i]);
           var widgets = [];
           for (var j = 0; j < this.columns.length; j++) {
-            this.fdms_debug(j, this.columns);
             widgets.push(this.fdms_configure_widget(this.columns[j], schema));
           }
           var item = {
@@ -53,19 +58,9 @@ export default {
           };
           items.push(item);
         }
-      }
-      this.items = items;
-    }
-  },
-  computed: {
-    columns_() {
-      var columns = [];
-      for (var i in this.columns) {
-        var col = this.fdms_configure_widget(this.columns[i]);
-        columns.push(col);
-      }
-      this.fdms_debug("headers", columns);
-      return columns;
+        this.fdms_trace("Documents widgets configured", items);
+      } else this.fdms_trace("Documents widgets not configured", this.docs);
+      return items;
     }
   }
 };

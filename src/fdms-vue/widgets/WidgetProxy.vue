@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="widget.type">
   <component
     v-bind:is="`widget-${widget.type}`" v-model="local_value" :config="widget.config" :doc="doc">
       
@@ -9,13 +9,12 @@
 
 <script>
 import WidgetText from "./WidgetText.vue";
-import WidgetChildren from "./WidgetChildren.vue";
 import WidgetList from "./WidgetList.vue";
 import WidgetArray from "./WidgetArray.vue";
 
 export default {
   name: "WidgetProxy",
-  components: { WidgetText, WidgetChildren, WidgetArray, WidgetList },
+  components: { WidgetText, WidgetArray, WidgetList },
   props: {
     value: [Object, String, Array],
     doc: Object,
@@ -35,11 +34,6 @@ export default {
     },
     local_value(val) {
       this.$emit("input", val);
-    }
-  },
-  computed: {
-    ready() {
-      return this.widget && (this.widget.type === "text" || this.widget.type === "children");
     }
   }
 };

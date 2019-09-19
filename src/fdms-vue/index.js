@@ -2,10 +2,13 @@ import fdms from "./mixins/fdms.js";
 import "./style.css";
 import "./icons.js";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import AsyncComputed from "vue-async-computed";
 
 var Fdms = {};
 Fdms.install = function(Vue, options) {
   Vue.component("font-awesome-icon", FontAwesomeIcon);
+  Vue.use(AsyncComputed);
+
 
   // 1. add global method or property
   /*  Vue.myGlobalMethod = function () {

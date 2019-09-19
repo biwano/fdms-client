@@ -1,13 +1,9 @@
 <template>
-  <span v-if="doc_">
-    <span @click="navigate('/')" class="clickable">
-      /
-    </span>
+  <span v-if="doc">
+    <span @click="navigate('/')" class="fdms-clickable">/</span>
     <span v-for="path in paths">
       <span>{{ path.separator }}</span>
-      <span @click="navigate(path.target)" class="fdms-clickable">
-      {{ path.segment }} 
-    </span>
+      <span @click="navigate(path.target)" class="fdms-clickable">{{ path.segment }}</span>
     </span>
   </span>
 </template>
@@ -27,8 +23,8 @@ export default {
   computed: {
     paths() {
       var paths = [];
-      if (this.doc_) {
-        var string_paths = this.doc_[PATH].split("/");
+      if (this.doc) {
+        var string_paths = this.doc[PATH].split("/");
         var target = "";
         for (var i in string_paths) {
           var segment = string_paths[i];

@@ -1,7 +1,7 @@
 <template>
   <span>
-    <span v-if="children">
-        <documents-list :docs="children" :columns="config.columns"></documents-list>
+    <span v-if="docs.length">
+        <documents-list :docs="docs" :columns="config.columns"></documents-list>
     </span>
   </span>
 </template>
@@ -15,26 +15,20 @@ export default {
   components: { DocumentsList: () => import("./DocumentsList.vue") },
   data() {
     return {
-      children: []
+      docs: []
     };
   },
-  created() {
-    this.load();
-  },
-  watch: {
-    doc() {
-      this.load();
-    }
-  },
   methods: {
-    async load() {
-      var filter = this.config.filter;
-      if (filter && this.doc) {
-        for (var key in filter) {
-          filter[key] = this.fdms_interpolate(filter[key], { doc: this.doc });
+    async widget_update() {
+      var filter = {};
+      this.docs = [];
+      if (this.config.filter && this.doc) {
+        for (var key in this.config.filter) {
+          filter[key] = this.fdms_interpolate(this.config.filter[key], { doc: this.doc });
         }
-        this.children = await this.fdms_filter(filter);
-      }
+        this.docs = await this.fdms_filter(filter);
+        this.fdms_trace("List updated", this.docs);
+      } else this.fdms_trace("List not updated", this.doc, this.config.filter);
     }
   }
 };
