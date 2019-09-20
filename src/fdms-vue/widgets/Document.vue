@@ -1,11 +1,15 @@
 <template>
   <div v-if="layout">
+    <div style="float:right">
+      <font-awesome-icon icon="edit" class="fdms-big-icon fdms-clickable" @click="set_mode('edit')" v-if="fdms_doc_is_writable(doc) && mode=='view'"/>
+      <font-awesome-icon icon="ban" class="fdms-big-icon fdms-clickable" @click="set_mode('view')" v-if="mode=='edit'"/>
+    </div>
     <div v-for="widget in layout">
       <b v-if="widget.config.label">{{widget.config.label}} : </b>
-      <widget-proxy :widget="widget" v-model="doc[widget.config.model]" :doc="doc" ></widget-proxy>
+      <widget-proxy :widget="widget" v-model="doc[widget.config.model]" :doc="doc" :mode="mode"></widget-proxy>
       <br/>
-      
     </div>
+    <button type="button" class="pure-button pure-button-primary" v-on:click="save" v-if="mode=='edit'">Save</button>
   </div>
 </template>
 
@@ -23,15 +27,22 @@ export default {
   data() {
     return {
       schema: undefined,
-      view_config: undefined
+      view_config: undefined,
+      mode: "view"
     };
-  },  
+  },
   methods: {
     async load() {
       this.view_config = undefined;
       this.schema = undefined;
       this.view_config = await this.fdms_get_view_config(this.doc);
       this.schema = await this.fdms_get_schema_full(this.doc);
+    },
+    set_mode(mode) {
+      this.mode = mode;
+    },
+    save() {
+      this.fdms_update(this.doc);
     }
   },
   computed: {

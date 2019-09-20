@@ -4,3 +4,6 @@
 .fdms-clickable {
   cursor: pointer;
 }
+.fdms-big-icon {
+  font-size: 25px;
+}

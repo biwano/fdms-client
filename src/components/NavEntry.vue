@@ -13,7 +13,7 @@ export default {
   name: "NavEntry",
   computed: {
     link() {
-      return this.to!== undefined
+      return this.to!== undefined;
     }
   }
 };
@@ -28,7 +28,7 @@ li a:hover {
    background-color:#044; 
    color:white;
 }
-li a.router-link-exact-active {
+li a.router-link-active {
    background-color:#066; 
 }
 li {

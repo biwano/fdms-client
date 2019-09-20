@@ -5,7 +5,9 @@ import {
   SCHEMA_ID,
   DEFAULT,
   PATH,
-  MODIFIERS
+  MODIFIERS,
+  FACETS,
+  FACET_SHOW_IN_TREE
 } from "../constants.js";
 import state from "./state.js";
 import cache from "js-cache";
@@ -83,20 +85,31 @@ export default {
         //var doc = doc_id;
         //doc_id = doc[PATH];
       }
+      var more_params = {};
+      more_params[MODIFIERS] = "with_permissions";
+      params = Object.assign({}, params, more_params);
       if (!doc_id.startsWith("/")) doc_id = `/${doc_id}`;
       return this._handle(
         state.http.get(toURI(`/documents${doc_id}`, state.fdms_tenant_id, params))
       );
     },
-    fdms_get_children(doc_id, params) {
+    fdms_update(doc) {
+      return this._handle(
+        state.http.put(toURI(`/documents${doc[PATH]}`, state.fdms_tenant_id), doc)
+      );
+    },
+    fdms_get_tree_children(doc_id, params) {
       if (typeof doc_id === "object") {
         var doc = doc_id;
         doc_id = doc[PATH];
       }
       var more_params = {};
-      more_params[MODIFIERS] = "children";
+      more_params[FACETS] = FACET_SHOW_IN_TREE;
+      more_params[MODIFIERS] = "children,with_permissions";
       params = Object.assign({}, params, more_params);
-      return this.fdms_get(doc_id, params);
+      return this._handle(
+        state.http.get(toURI(`/documents${doc_id}`, state.fdms_tenant_id, params))
+      );
     },
     fdms_from_cache(key, func) {
       if (cache.get(key)) return cache.get(key);

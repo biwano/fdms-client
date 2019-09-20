@@ -4,15 +4,17 @@ import {
   PATH,
   PATH_SEGMENT,
   PARENT_UUID,
-  DOCUMENT_UUID
+  DOCUMENT_UUID,
+  PERMISSIONS
 } from "../constants.js";
 import Mustache from "mustache";
 
 var widgets_auto_props = {
-  keyword: "text",
-  boolean: "boolean",
-  date: "date",
-  json: "text"
+  keyword: { type: "text" },
+  boolean: { type: "boolean" },
+  date: { type: "date" },
+  json: { type: "text" },
+  email: { type: "text", config: { type: "email" } }
 };
 export default {
   methods: {
@@ -21,6 +23,9 @@ export default {
     },
     fdms_doc_path(doc) {
       return doc[PATH];
+    },
+    fdms_doc_is_writable(doc) {
+      return doc && doc[PERMISSIONS] && doc[PERMISSIONS].includes("w");
     },
     fdms_after_init(func) {
       if (state.fdms_initialized) func();
@@ -84,9 +89,12 @@ export default {
           var prop = schema.properties[model];
           if (prop) {
             while (prop.alias) {
+              widget.config.readonly = true;
               prop = schema.properties[prop.alias];
             }
-            if (!widget.type) widget.type = widgets_auto_props[prop.type];
+            var auto_prop = widgets_auto_props[prop.type];
+            if (!widget.type) widget.type = auto_prop.type;
+            Object.assign(widget.config, auto_prop.config);
             if (prop.list === true) {
               widget = {
                 type: "array",

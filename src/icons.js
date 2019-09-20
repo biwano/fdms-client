@@ -12,7 +12,8 @@ import {
   faCaretRight,
   faUsers,
   faUser,
-  faSyncAlt
+  faSyncAlt,
+  faBan
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faPlusCircle,
@@ -27,6 +28,7 @@ library.add(
   faCaretRight,
   faUsers,
   faUser,
-  faSyncAlt
+  faSyncAlt,
+  faBan
 );
 

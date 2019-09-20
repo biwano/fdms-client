@@ -10,6 +10,7 @@ export var VIEW_CONFIG = "__view_config";
 export var DEFAULT = "__default";
 export var PARENT_UUID = "__parent_uuid";
 export var DOCUMENT_UUID = "__document_uuid";
+export var PERMISSIONS = "__permissions";
 
 export default {
   TENANT_ID,

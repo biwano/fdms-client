@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { FACETS, FACET_SHOW_IN_TREE, PATH } from "../constants.js";
+import { PATH } from "../constants.js";
 import doc_mixin from "./doc_mixin.js";
 
 export default {
@@ -76,9 +76,7 @@ export default {
       return this.value !== undefined && this.value[PATH] == child[PATH];
     },
     async load() {
-      var params = {};
-      params[FACETS] = FACET_SHOW_IN_TREE;
-      this.children = await this.fdms_get_children(this.doc, params);
+      this.children = await this.fdms_get_tree_children(this.doc);
       for (var index in this.children) {
         var child = this.children[index];
         child.___expanded = false;

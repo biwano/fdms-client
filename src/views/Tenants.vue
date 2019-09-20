@@ -4,7 +4,7 @@
 
   	<div style="float:right">
       <router-link to="/tenants/create">
-        <font-awesome-icon icon="plus-circle" class="big-icon"/>
+        <font-awesome-icon icon="plus-circle" class="fdms-big-icon"/>
       </router-link>
     </div>
 

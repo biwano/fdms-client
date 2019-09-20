@@ -21,12 +21,16 @@ export default {
     }
   },
   created() {
+    this.local_value = this.value;
     this.debounced_widget_update = debounce(this.widget_update, 25);
     this.debounced_widget_update();
   },
   computed: {
-    view() {
-      return !this.mode || this.mode === "view";
+    mode_edit() {
+      return this.mode === "edit" && this.config.readonly === undefined;
+    },
+    mode_view() {
+      return !this.mode_edit;
     }
   },
   methods: {

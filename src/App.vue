@@ -70,9 +70,6 @@ a {
 a:hover {
   color:#044;
 }
-.big-icon {
-  font-size: 50px;
-}
 .spinner {
   font-size: 50px;
   float:right;  

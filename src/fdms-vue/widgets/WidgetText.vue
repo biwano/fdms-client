@@ -3,8 +3,11 @@
     <span v-if="icon">
         <font-awesome-icon :icon="icon" class="fdms-icon"/>
     </span>
-    <span v-if="view">
+    <span v-if="mode_view">
       {{ value }}
+    </span>
+    <span v-if="mode_edit">
+      <input :type="config.type" v-model="local_value"></input>
     </span>
   </span>
 </template>
