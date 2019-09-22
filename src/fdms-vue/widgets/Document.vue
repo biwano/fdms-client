@@ -41,8 +41,10 @@ export default {
     set_mode(mode) {
       this.mode = mode;
     },
-    save() {
-      this.fdms_update(this.doc);
+    async save() {
+      await this.fdms_update(this.doc);
+      this.set_mode('view');
+      this.load();
     }
   },
   computed: {
