@@ -1,15 +1,25 @@
 <template>
   <div v-if="layout">
     <div style="float:right">
-      <font-awesome-icon icon="edit" class="fdms-big-icon fdms-clickable" @click="set_mode('edit')" v-if="fdms_doc_is_writable(doc) && mode=='view'"/>
-      <font-awesome-icon icon="ban" class="fdms-big-icon fdms-clickable" @click="set_mode('view')" v-if="mode=='edit'"/>
+      <span v-if="fdms_doc_is_writable(doc)" >
+        <font-awesome-icon v-if="is_view" icon="edit" class="fdms-big-icon fdms-clickable" @click="set_mode('edit')"/>
+        <font-awesome-icon v-if="is_edit" icon="ban" class="fdms-big-icon fdms-clickable" @click="set_mode('view')"/>
+      </span>
+      <font-awesome-icon v-if="is_new" icon="ban" class="fdms-big-icon fdms-clickable" @click="cancel_new()"/>
     </div>
+    <!-- Select schema for new documents -->
+    <select v-if="is_new">
+    </select>
+    <!-- Widgets -->
     <div v-for="widget in layout">
-      <b v-if="widget.config.label">{{widget.config.label}} : </b>
-      <widget-proxy :widget="widget" v-model="doc[widget.config.model]" :doc="doc" :mode="mode"></widget-proxy>
+      <b v-if="widget.config.label">{{widget.config.label}} </b>
+      <widget-proxy :widget="widget" v-model="doc[widget.config.model]" :doc="doc" :mode="mode_"></widget-proxy>
       <br/>
     </div>
-    <button type="button" class="pure-button pure-button-primary" v-on:click="save" v-if="mode=='edit'">Save</button>
+    <!-- Save document -->
+    <button type="button" class="pure-button pure-button-primary" v-on:click="save" v-if="is_edit">Save</button>
+    <!-- Create children -->
+    <font-awesome-icon v-if="!is_new" icon="plus-circle" class="fdms-big-icon fdms-clickable" @click="create_child"/>
   </div>
 </template>
 
@@ -22,14 +32,18 @@ export default {
   components: { WidgetProxy },
   mixins: [doc_mixin],
   props: {
-    version: String
+    version: String,
+    mode: String 
   },
   data() {
     return {
       schema: undefined,
       view_config: undefined,
-      mode: "view"
+      mode_: "view"
     };
+  },
+  created() {
+    if (this.mode) this.set_mode(this.mode);
   },
   methods: {
     async load() {
@@ -39,12 +53,21 @@ export default {
       this.schema = await this.fdms_get_schema_full(this.doc);
     },
     set_mode(mode) {
-      this.mode = mode;
+      this.mode_ = mode;
+    },
+    create_child() {
+      this.fdms_bus().$emit("create_document_requested", this.path);
+      
+      
     },
     async save() {
       await this.fdms_update(this.doc);
+      this.fdms_bus().$emit("saved", this.doc);
       this.set_mode('view');
       this.load();
+    },
+    cancel_new() {
+      this.fdms_bus().$emit("new_document_canceled", this.path);
     }
   },
   computed: {
@@ -64,6 +87,15 @@ export default {
       set(layout) {
         this.layout = layout;
       }
+    },
+    is_new() {
+      return this.mode_ == 'new';
+    },
+    is_edit() {
+      return this.mode_ == 'edit';
+    },
+    is_view() {
+      return this.mode_ == 'view';
     }
   }
 };

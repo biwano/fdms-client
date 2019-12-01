@@ -30,8 +30,20 @@ export default {
     this.fdms_info("init");
     this.fdms_bus().$on("navigate", path => {
       path = this.fdms_as_path(path);
-      this.$router.push({ name: "browse", params: { path } });
+      this.$router.push({ name: "browse_documents", params: { path } });
     });
+    this.fdms_bus().$on("create_document_requested", path => {
+      this.$router.push({ name: "create_document", params: { path } });
+    });
+    
+    this.fdms_bus().$on("saved", doc => {
+      this.global_info(`Document ${doc.id} saved`);
+    });
+    this.fdms_bus().$on("new_document_canceled", path => {
+      this.$router.push({ name: "browse_documents", params: { path } });
+    });
+    
+      
   },
   methods: {
   }

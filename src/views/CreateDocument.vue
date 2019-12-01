@@ -9,7 +9,7 @@
           <tree-root :doc_id="root_path" v-model="doc"></tree-root>
       </div>
       <div class="content">
-        <document :doc_id="doc"></document>
+        <document :doc_id="new_doc" mode="new"></document>
       </div>
     </div>
  </div>
@@ -21,11 +21,12 @@ import Document from "@/fdms-vue/widgets/Document.vue";
 import Breadcrumb from "@/fdms-vue/widgets/BreadCrumb.vue";
 
 export default {
-  name: "Browse",
+  name: "CreateDocument",
   data() {
     return {
       root_path: undefined,
-      doc: undefined
+      doc: undefined,
+      new_doc: {}
     };
   },
   components: {

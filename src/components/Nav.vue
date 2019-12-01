@@ -6,7 +6,7 @@
       <hr/>
       <nav-entry>{{ $store.getters.user.tenant_id}}</nav-entry>
       <hr/>
-      <nav-entry to="/browse" icon="folder">Browse</nav-entry>
+      <nav-entry to="/documents/browse" icon="folder">Browse</nav-entry>
       <nav-entry to="/tenants" icon="home">Tenants</nav-entry>
     </ul>
     </div>

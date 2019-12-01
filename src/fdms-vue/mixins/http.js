@@ -125,7 +125,9 @@ export default {
         view_config = doc[VIEW_CONFIG];
         if (!view_config) {
           var schema = await this.fdms_get_schema(doc[SCHEMA_ID]);
-          view_config = schema[VIEW_CONFIG];
+          if (schema) {
+            view_config = schema[VIEW_CONFIG];
+          }
         }
         if (!view_config) view_config = DEFAULT;
       }
@@ -147,7 +149,9 @@ export default {
     },
     async fdms_get_schema_full(schema_id) {
       var schema = await this.fdms_get_schema(schema_id);
-      Object.assign(schema.properties, state.fdms_config.base_properties);
+      if (schema) {
+        Object.assign(schema.properties, state.fdms_config.base_properties);
+      }
       return schema;
     },
   }

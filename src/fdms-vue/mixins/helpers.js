@@ -77,6 +77,7 @@ export default {
       widget = Object.assign({}, widget);
       widget.config = Object.assign({}, widget.config);
       if (widget.type == "children") {
+        widget.config.label = "Children";
         widget.type = "list";
         widget.config.filter = {};
         widget.config.filter[PARENT_UUID] = `{{doc.${DOCUMENT_UUID}}}`;

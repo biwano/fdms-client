@@ -10,11 +10,12 @@
 import WidgetText from "./WidgetText.vue";
 import WidgetList from "./WidgetList.vue";
 import WidgetArray from "./WidgetArray.vue";
+import WidgetSeparator from "./WidgetSeparator.vue";
 import widget_mixin from "./widget_mixin.js";
 
 export default {
   name: "WidgetProxy",
-  components: { WidgetText, WidgetArray, WidgetList },
+  components: { WidgetText, WidgetArray, WidgetList, WidgetSeparator },
   mixins: [widget_mixin],
   props: {
     widget: Object
