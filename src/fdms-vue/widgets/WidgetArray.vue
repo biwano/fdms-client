@@ -1,7 +1,7 @@
 <template>
   <span>
     <span v-for="(entry, index) in value">
-      <widget-proxy :widget="config.widget" v-model="value[index]" :doc="doc"></widget-proxy>      
+      <widget-proxy :widget="config.widget" v-model="value[index]" :doc="doc" :mode="mode"></widget-proxy>      
     </span>
   </span>
 </template>

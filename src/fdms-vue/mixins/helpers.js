@@ -13,7 +13,7 @@ var widgets_auto_props = {
   keyword: { type: "text" },
   boolean: { type: "boolean" },
   date: { type: "date" },
-  json: { type: "text" },
+  json: { type: "json" },
   email: { type: "text", config: { type: "email" } }
 };
 export default {
