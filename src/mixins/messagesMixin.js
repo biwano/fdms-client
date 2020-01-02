@@ -7,6 +7,9 @@ export default {
 			if (category === undefined) category = "global";
 			this.$store.commit("clear_messages", category);
 		},
+		clear_message(message) {
+			this.$store.commit("clear_message", message.uuid);
+		},
 		error(category, text) {
 			this.clear_messages(category);
 			this.message(category, "error", text);

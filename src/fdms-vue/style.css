@@ -1,9 +1,28 @@
 .fdms-icon {
-  margin-right:10px;
+  margin-right:5px;
+  margin-left:5px;
+}
+.fdms-clickable:hover {
+	background-color: whitesmoke;
+	position: relative;
+	transform: translate(0, -2px);
+}
+.fdms-clickable:active {
+	color: #3273dc;	
+	background-color: transparent;	
 }
 .fdms-clickable {
   cursor: pointer;
+  color:black;
+  display: inline-block;
+  transition: transform .3s ease-out;
 }
 .fdms-big-icon {
   font-size: 25px;
+}
+li > a {
+	transition: transform .3s ease-out;
+}
+li > a:hover {
+	transform: translate(2px, 0);
 }

@@ -1,21 +1,25 @@
 <template>
-  <div class="layout">
-    <div class="top">
-    <ul>
-      <nav-entry>The Free DMS</nav-entry>
-      <hr/>
-      <nav-entry>{{ $store.getters.user.tenant_id}}</nav-entry>
-      <hr/>
-      <nav-entry to="/documents/browse" icon="folder">Browse</nav-entry>
+  <aside class="menu">
+    <p class="menu-label">
+      {{ $store.getters.user.tenant_id}}
+    </p>
+    <ul class="menu-list">
+      <nav-entry to="/documents/browse" icon="folder"><span>Browse</span></nav-entry>
       <nav-entry to="/tenants" icon="home">Tenants</nav-entry>
+      <li :class="sub_nav_class('/tenants')">
+        <ul>
+          <nav-entry to="/tenants/create" icon="plus-circle">Create tenant</nav-entry>
+        </ul>
+      </li>
+
     </ul>
-    </div>
-    <div class="bottom">
-    <ul>
-      <nav-entry to="/login" icon="sign-out-alt">{{ $store.getters.user.user_id}}</nav-entry>
+    <p class="menu-label">
+      {{ $store.getters.user.user_id}}
+    </p>
+    <ul class="menu-list">
+      <nav-entry to="/login" icon="sign-out-alt">Logout</nav-entry>
     </ul>
-    </div>
-  </div>
+  </aside>
 </template>
 <script>
 import NavEntry from "@/components/NavEntry.vue";
@@ -25,27 +29,26 @@ export default {
   components: {
     "nav-entry": NavEntry
   },
+  methods: {
+    sub_nav_class(route) {
+      var is_active = this.$route.path.startsWith(route);
+      return {
+        sub_nav_active: is_active,
+        sub_nav_inactive: !is_active
+      }
+    }
+  }
 };
 </script>
 <style scoped>
-.layout {
-  display:flex;
-  flex-direction:column;
-  height:100%;
+.sub_nav_active {
+  transition: 1s;
+  max-height: 100px;
+  overflow: hidden;
 }
-.top {
-  flex: 1 1 auto;
-}
-.bottom {
-  flex: 0 1 20px; 
-}
-ul {
-  padding:0px;
-  padding-top: 5px;
-  margin:0;
-}
-.item {
-  padding:10px;
-  display:block;
+.sub_nav_inactive {
+  transition: 1s;
+  max-height: 0;
+  overflow: hidden;
 }
 </style>

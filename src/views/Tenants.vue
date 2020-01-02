@@ -1,24 +1,13 @@
 <template>
   <div>
-  	    <h1>Tenants</h1>
-
-  	<div style="float:right">
-      <router-link to="/tenants/create">
-        <font-awesome-icon icon="plus-circle" class="fdms-big-icon"/>
-      </router-link>
-    </div>
-
     <documents-list :docs="docs" :columns="columns">
       <template v-slot:custom-headers>
         <th>Actions</th>
       </template>
       <template v-slot:custom-values="slotProps">
         <td>
-          <a href="#">
-            <font-awesome-icon icon="trash" class="fdms-icon" v-on:click="delete_tenant_(slotProps.doc.id)"/>
-            <font-awesome-icon icon="sync-alt" class="fdms-icon" v-on:click="refresh_tenant_(slotProps.doc.id)"/>
-          </a>
-
+          <fdms-clickable-icon icon="trash" v-on:click="delete_tenant_(slotProps.doc.id)"></fdms-clickable-icon>
+          <fdms-clickable-icon icon="sync-alt" v-on:click="refresh_tenant_(slotProps.doc.id)"></fdms-clickable-icon>
         </td>
       </template>
     </documents-list>
@@ -29,7 +18,6 @@
 // @ is an alias to /src
 import DocumentsList from "@/fdms-vue/widgets/DocumentsList.vue";
 import C from "@/fdms-vue/constants.js";
-import bus from "@/fdms-vue/bus.js";
 export default {
   name: "tenants",
   data() {

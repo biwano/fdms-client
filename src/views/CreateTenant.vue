@@ -1,6 +1,6 @@
 <template>
   <div>
-  	<h1>Create tenant</h1>
+  	<h1 class="title is-pulled-right">Create tenant</h1>
     <form class="pure-form pure-form-stacked">
 	    <fieldset>
           <label for="id">Tenant ID</label>

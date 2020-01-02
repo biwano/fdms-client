@@ -1,11 +1,12 @@
 <template>
-  <div >
-    <div v-if="$store.state.messages[category] !== undefined" >
-    
-      <span :class="getClass(message)" 
-      v-for="message in $store.state.messages[category].messages">
-        {{ message.text }}
-      </span>
+  <div>
+    <div
+      :class="visibilityClass(message)"
+      v-for="message in $store.getters.messages(category)"
+    >
+      <button class="delete" @click="clear_message(message)"></button>
+      <font-awesome-icon :icon="icon(message)" :class="iconClass(message)" />
+      {{ message.text }}
     </div>
   </div>
 </template>
@@ -17,8 +18,32 @@ export default {
     category: String
   },
   methods: {
-    getClass(message) {
-      return `alert ${message.type}`;
+    visibilityClass(message) {
+      var clazz = {};
+      clazz["notification"] = true;
+      clazz["message"] = true;
+      if (message.shown) {
+        clazz["invisible"] = false;
+        clazz[message.ended ? "invisible" : "visible"] = true;
+      }
+      else { 
+        clazz["invisible"] = true;
+        window.setTimeout(() => {
+          message.shown = new Date();
+          this.$store.commit("update_message", message);
+        }, 10);
+      }
+      return clazz;
+    },
+    iconClass(message) {
+      var clazz = {};
+      clazz["fdms-icon"] = true;
+      clazz[message.type] = true;
+      return clazz;
+    },
+    icon(message) {
+      if (message.type === "info") return "thumbs-up";
+      if (message.type === "error") return "exclamation-circle";
     }
   }
 };
@@ -35,9 +60,25 @@ export default {
   display: block;
 }
 .error {
-    background-color: #f44336; /* Red */
+  color: #f44336; /* Red */
 }
 .info {
-  background-color: #099; /* Red */
+  color: #099; /* Red */
+}
+.message {
+  overflow: hidden;
+}
+.message.visible {
+  opacity: 1;
+  max-height: 100px;
+  transition: 1s;
+}
+.message.invisible {
+  opacity: 1;
+  max-height: 0;
+  transition: 1s;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
 }
 </style>

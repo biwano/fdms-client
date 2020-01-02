@@ -8,7 +8,8 @@ import "./icons.js";
 
 import "./mixins";
 
-import "purecss/build/pure.css";
+import "./style.css";
+import "bulma/css/bulma.css";
 
 Vue.config.productionTip = false;
 Vue.use(Fdms, config);

@@ -2,11 +2,14 @@ import fdms from "./mixins/fdms.js";
 import "./style.css";
 import "./icons.js";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import ClickableIcon from "./components/ClickableIcon.vue";
 import AsyncComputed from "vue-async-computed";
 
 var Fdms = {};
 Fdms.install = function(Vue, options) {
+  console.log(ClickableIcon);
   Vue.component("font-awesome-icon", FontAwesomeIcon);
+  Vue.component("fdms-clickable-icon", ClickableIcon);
   Vue.use(AsyncComputed);
 
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="pure-table pure-table-horizontal">
+    <table class="table">
       <thead>
         <tr>
           <th v-for="widget in headers">{{ widget.config.label}}</th>

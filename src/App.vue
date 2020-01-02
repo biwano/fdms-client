@@ -1,18 +1,20 @@
 <template>
-  <div id="layout">
-    <!-- Menu toggle -->
-    <div id="menu">
+  <div>
+    <div id="layout">
+      <!-- Menu toggle -->
       <navigation></navigation>
-    </div>
-    <div id="main">
-      <messages category="global"></messages>
-      <span v-if="$store.state.busy" class="spinner">
-        <font-awesome-icon icon="cog" spin />
-      </span>
-      <div id="route_content">
-        <router-view />
+      <div id="main">
+        <div id="route_content">
+          <router-view />
+        </div>
       </div>
     </div>
+    <div id="notifications">
+      <messages category="global"></messages>
+    </div>
+    <span :class="spinner_class">
+        <font-awesome-icon icon="cog" spin />
+    </span>
   </div>
 </template>
 <script>
@@ -45,58 +47,43 @@ export default {
     
       
   },
-  methods: {
+  computed: {
+    spinner_class() {
+      return {
+        spinner: true,
+        "spinner-active": this.$store.state.busy
+      };
+    }
   }
 };
 </script>
 
 <style>
-#menu {
-  flex: 0 1 150px;
-  height:100vh;
-  background-color:#033;
+#layout {
+  display:flex;
+  flex-direction:row;
 }
 #main {
   flex:1 1 auto;
 }
-#route_content {
-  padding:5px;
-}
-body {
-  color:#022;
-  font-family: Helvetica,Arial,sans-serif;
-}
-h1 {
-  margin-top:0 !important;
-}
-th {
-  background-color:#033;
-  color:white;
-}
-.pure-button-primary {
-  background-color: #044 !important;
-}
-a {
-  color:#022;
-}
-a:hover {
-  color:#044;
+#notifications {
+  position: absolute;
+  bottom: 0px;  
+  width:100%;
 }
 .spinner {
   font-size: 50px;
   float:right;  
+  opacity: 0;
+  position: absolute;
+  right: -50px;
+  bottom: 0;
+  transition: 1s;
+  color:#3273dc;
 }
-.fdms-clickable:hover {
-  color:#044;
-}
-hr {
-  margin-block-end: 0px;
-  margin-block-start: 0px;
-}
-</style>
-<style>
-#layout {
-  display:flex;
-  flex-direction:row;
+.spinner-active {
+  transition: 1s;
+  opacity: 1;
+  right: 0px;
 }
 </style>
