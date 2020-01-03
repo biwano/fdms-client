@@ -12,23 +12,8 @@ import "./style.css";
 import "bulma/css/bulma.css";
 
 Vue.config.productionTip = false;
-Vue.use(Fdms, config);
+Vue.use(Fdms, Object.assign({}, config, { store }));
 Vue.mixin({
-  methods: {
-    busy() {
-      this.$store.commit("busy");
-    },
-    available() {
-      this.$store.commit("available");
-    },
-    busy_while(promise) {
-      this.busy();
-      this.clear_messages();
-      return promise.finally(() => {
-        this.available();
-      });
-    }
-  },
   computed: {
     bus() {
       return this.$store.state.bus;

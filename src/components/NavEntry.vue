@@ -7,7 +7,7 @@
       class="link"
       :class="link_class"
     >
-      <font-awesome-icon :icon="icon" class="icon" /><span class="slot"
+      <fdms-icon :icon="icon" class="icon" /><span class="slot"
         ><slot></slot
       ></span>
     </router-link>
@@ -34,22 +34,6 @@ export default {
       };
     }
   },
-  mounted() {
-    /*
-    this.observer = new MutationObserver(mutations => {
-          this.computeLinkClass();
-    });
-    this.observer.observe(this.$refs.link.$el, {
-      attributes: true,
-      attributeOldValue: true,
-      attributeFilter: ["class"]
-    });
-    this.computeLinkClass();
-    */
-  },
-  beforeDestroy() {
-    this.observer.disconnect();
-  },
   methods: {
     computeLinkClass() {
       this.link_class = {
@@ -69,7 +53,6 @@ export default {
 </script>
 <style scoped>
 .icon {
-  margin-right: 5px;
   display: inline-block;
   vertical-align: middle;
 }

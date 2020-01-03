@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import bus from "@/fdms-vue/bus.js";
-//import config from "./config";
 
 Vue.use(Vuex);
 function getMessageCategory(state, category) {
@@ -21,17 +20,10 @@ var store = new Vuex.Store({
   state: {
     user: undefined,
     message_categories: {},
-    busy: 0,
     bus,
     uuid: 0
   },
   mutations: {
-    busy(state) {
-      state.busy++;
-    },
-    available(state) {
-      state.busy--;
-    },
     set_user(state, user) {
       state.user = user;
     },

@@ -5,7 +5,7 @@
       v-for="message in $store.getters.messages(category)"
     >
       <button class="delete" @click="clear_message(message)"></button>
-      <font-awesome-icon :icon="icon(message)" :class="iconClass(message)" />
+      <fdms-icon :icon="icon(message)" :class="iconClass(message)" />
       {{ message.text }}
     </div>
   </div>

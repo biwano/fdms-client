@@ -2,10 +2,10 @@
   <div v-if="layout">
     <div style="float:right">
       <span v-if="fdms_doc_is_writable(doc)" >
-        <font-awesome-icon v-if="is_view" icon="edit" class="fdms-big-icon fdms-clickable" @click="set_mode('edit')"/>
-        <font-awesome-icon v-if="is_edit" icon="ban" class="fdms-big-icon fdms-clickable" @click="set_mode('view')"/>
+        <fdms-button @click="set_mode('edit')" icon="edit" v-if="is_view">Edit document</fdms-button>
+        <fdms-button icon="save" @click="save" v-if="is_edit">Save</fdms-button>
+        <fdms-button icon="ban" class="is-light" @click="set_mode('view')" v-if="is_edit">Cancel</fdms-button>
       </span>
-      <font-awesome-icon v-if="is_new" icon="ban" class="fdms-big-icon fdms-clickable" @click="cancel_new()"/>
     </div>
     <!-- Select schema for new documents -->
     <select v-if="is_new">
@@ -17,9 +17,9 @@
       <br/>
     </div>
     <!-- Save document -->
-    <button type="button" class="pure-button pure-button-primary" v-on:click="save" v-if="is_edit">Save</button>
+
     <!-- Create children -->
-    <font-awesome-icon v-if="!is_new" icon="plus-circle" class="fdms-big-icon fdms-clickable" @click="create_child"/>
+    <fdms-icon v-if="!is_new" icon="plus-circle" class="fdms-big-icon fdms-clickable" @click="create_child"/>
   </div>
 </template>
 

@@ -27,13 +27,13 @@ export default {
   components: { WidgetProxy },
   props: {
     docs: Array,
-    columns: Array
+    fields: Array
   },
   computed: {
     headers() {
       var headers = [];
-      for (var i in this.columns) {
-        var col = this.fdms_configure_widget(this.columns[i]);
+      for (var i in this.fields) {
+        var col = this.fdms_configure_widget(this.fields[i]);
         headers.push(col);
       }
       this.fdms_trace("Headers configured", headers);
@@ -48,8 +48,8 @@ export default {
         for (var i in this.docs) {
           var schema = await this.fdms_get_schema_full(this.docs[i]);
           var widgets = [];
-          for (var j = 0; j < this.columns.length; j++) {
-            widgets.push(this.fdms_configure_widget(this.columns[j], schema));
+          for (var j = 0; j < this.fields.length; j++) {
+            widgets.push(this.fdms_configure_widget(this.fields[j], schema));
           }
           var item = {
             doc: this.docs[i],

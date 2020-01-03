@@ -1,18 +1,18 @@
 <template>
   <div class="node_layout">
-    <div v-for="(child, index) in children">
-      <span v-if="!child.___expanded" v-on:click="expand(child, index)">
-        <font-awesome-icon icon="caret-down" class="fdms-icon fdms-clickable"/>
-        <font-awesome-icon  icon="folder" class="fdms-icon fdms-clickable"/>
-      </span>
-      <span v-if="child.___expanded" v-on:click="unexpand(child, index)">
-        <font-awesome-icon icon="caret-right" class="fdms-icon fdms-clickable"/>
-        <font-awesome-icon icon="folder-open" class="fdms-icon fdms-clickable"/>
-      </span>
-      <span @click="select_ui(child)" :class="{ selected:isSelected(child) }"  class="fdms-clickable">{{ child.___label }}</span>
-      </a>
+    <div v-for="(child, index) in children" >
+      <div v-if="!child.___expanded" v-on:click="expand(child, index)" :class="selectedClass(child)">
+        <fdms-icon icon="caret-down" />
+        <fdms-icon  icon="folder" class="fdms-icon"/>
+        <span @click="select_ui(child)" >{{ child.___label }}</span>
+      </div>
+      <div v-if="child.___expanded" v-on:click="unexpand(child, index)" :class="selectedClass(child)">
+        <fdms-icon icon="caret-right" class="fdms-icon"/>
+        <fdms-icon icon="folder-open" class="fdms-icon"/>
+        <span @click="select_ui(child)" >{{ child.___label }}</span>
+      </div>
       <div v-if="child.___expanded"  class="children">
-        <tree-root :doc_id="fdms_doc_path(child, index)" v-model="selected"></tree-root>
+        <document-tree :doc_id="fdms_doc_path(child, index)" v-model="selected"></document-tree>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@ import { PATH } from "../constants.js";
 import doc_mixin from "./doc_mixin.js";
 
 export default {
-  name: "TreeRoot",
+  name: "DocumentTree",
   mixins: [doc_mixin],
   data() {
     return {
@@ -75,6 +75,16 @@ export default {
     isSelected(child) {
       return this.value !== undefined && this.value[PATH] == child[PATH];
     },
+    selectedClass(child) {
+      var clazz = { 
+        "child": true,
+        "fdms-clickable": true 
+      };
+      if (this.isSelected(child)) {
+        clazz["selected"] = true;
+      }
+      return clazz;
+    },
     async load() {
       this.children = await this.fdms_get_tree_children(this.doc);
       for (var index in this.children) {
@@ -99,8 +109,11 @@ export default {
 .node_layout {
   margin-bottom:2px;
 }
-.selected {
-  color: #066;
-  font-weight: bold;
+.child {
+  padding: 2px;
+}
+.child.selected {
+  color: white;
+  background-color: #3273dc;
 }
 </style>

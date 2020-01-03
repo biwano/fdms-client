@@ -1,18 +1,25 @@
 <template>
   <div>
-  	<h1 class="title is-pulled-right">Create tenant</h1>
-    <form class="pure-form pure-form-stacked">
-	    <fieldset>
-          <label for="id">Tenant ID</label>
-	        <input type="text" placeholder="ID" id="id" v-model="id"/>
-          
-          <label for="drop">Drop tenant if it exists</label> 
-          <input type="checkbox" id="drop" v-model="drop"><br/>
-	        
-          <button  type="button" class="pure-button pure-button-primary" v-on:click="submit">Create</button>
+    <div>
+  	 <h1 class="title is-pulled-right">Create tenant</h1>
+    </div>
+    <div class="field is-clearfix">
+      <label class="label">Tenant ID</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="ID" id="id" v-model="id" :disabled="is_fdms_busy()">
+      </div>
+    </div>
 
-	    </fieldset>
-	  </form>
+    <div class="field">
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" id="drop" v-model="drop" :disabled="is_fdms_busy()">Drop tenant if it exists</a>
+        </label>
+      </div>
+    </div>
+    
+    <fdms-button icon="save" @click="submit">Create</fdms-button>
+    <fdms-button icon="ban" class="is-light" @click="cancel">Cancel</fdms-button>
   </div>
 </template>
 
@@ -30,15 +37,18 @@ export default {
   },
   methods: {
   	submit() {
-      this.busy_while(
+      this.fdms_busy_while(
     		this.fdms_create_tenant(this.id, this.drop).then(() => {
             this.global_info(`Tenant ${this.id} created`);
-            this.$router.push("/tenants")
+            this.$router.push("/tenants");
     		}).catch((e)=> {
     				this.global_error("Could not create tenant");
     		})
       );
-  	}
+  	},
+    cancel() {
+      this.$router.push("/tenants");
+    }
   }
 };
 </script>

@@ -5,6 +5,9 @@
     </p>
     <ul class="menu-list">
       <nav-entry to="/documents/browse" icon="folder"><span>Browse</span></nav-entry>
+      <li :class="sub_nav_class('/documents')">
+        <nav-documents-tree root_path="/meta"></nav-documents-tree>
+      </li>
       <nav-entry to="/tenants" icon="home">Tenants</nav-entry>
       <li :class="sub_nav_class('/tenants')">
         <ul>
@@ -23,11 +26,13 @@
 </template>
 <script>
 import NavEntry from "@/components/NavEntry.vue";
+import NavDocumentsTree from "@/components/NavDocumentsTree.vue";
  
 export default {
   name: "Nav",
   components: {
-    "nav-entry": NavEntry
+    "nav-entry": NavEntry,
+    "nav-documents-tree": NavDocumentsTree
   },
   methods: {
     sub_nav_class(route) {
@@ -43,7 +48,7 @@ export default {
 <style scoped>
 .sub_nav_active {
   transition: 1s;
-  max-height: 100px;
+  max-height: 1000px;
   overflow: hidden;
 }
 .sub_nav_inactive {

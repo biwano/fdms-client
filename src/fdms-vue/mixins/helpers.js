@@ -116,7 +116,24 @@ export default {
       return widget;
     },
     fdms_interpolate(template, data) {
-      return Mustache.render(template,data);
+      return Mustache.render(template, data);
+    },
+    fdms_busy() {
+      this.$store.commit("fdms/busy");
+    },
+    fdms_available() {
+      this.$store.commit("fdms/available");
+    },
+    fdms_busy_while(promise) {
+      this.fdms_busy();
+      this.clear_messages();
+      return promise.finally(() => {
+        this.fdms_available();
+      });
+    },
+    is_fdms_busy() {
+      return this.$store.getters["fdms/busy"];
     }
+
   }
 };

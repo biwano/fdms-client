@@ -1,12 +1,12 @@
 <template>
   <span>
     <span v-if="!expanded" @click="expand">
-      <font-awesome-icon icon="caret-down" class="fdms-icon fdms-clickable"/>
+      <fdms-clickable-icon icon="caret-down" />
         <div class="not_expanded">
       </div>
     </span>
     <span v-if="expanded">
-      <font-awesome-icon icon="caret-right" class="fdms-icon fdms-clickable"  @click="unexpand" />
+      <fdms-clickable-icon icon="caret-right" @click="unexpand" />
       <div v-for="key in keys" class="expanded">
         <div v-if="isInline(value[key])">
           {{ key }}: <widget-proxy :widget="makeWidget(value[key])" :doc="doc" v-model="value[key]" :mode="mode"></widget-proxy></td>

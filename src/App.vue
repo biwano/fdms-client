@@ -13,7 +13,7 @@
       <messages category="global"></messages>
     </div>
     <span :class="spinner_class">
-        <font-awesome-icon icon="cog" spin />
+        <fdms-icon icon="cog" :spin="true" />
     </span>
   </div>
 </template>
@@ -39,7 +39,7 @@ export default {
     });
     
     this.fdms_bus().$on("saved", doc => {
-      this.global_info(`Document ${doc.id} saved`);
+      this.global_info(`Document ${doc.__path_segment} saved`);
     });
     this.fdms_bus().$on("new_document_canceled", path => {
       this.$router.push({ name: "browse_documents", params: { path } });
@@ -51,7 +51,7 @@ export default {
     spinner_class() {
       return {
         spinner: true,
-        "spinner-active": this.$store.state.busy
+        "spinner-active": this.is_fdms_busy()
       };
     }
   }

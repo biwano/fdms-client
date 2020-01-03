@@ -1,7 +1,7 @@
 <template>
   <span>
     <span v-if="docs.length">
-        <documents-list :docs="docs" :columns="config.columns"></documents-list>
+        <documents-list :docs="docs" :fields="config.fields"></documents-list>
     </span>
   </span>
 </template>

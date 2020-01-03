@@ -1,11 +1,12 @@
 <template>
-  <span v-if="doc">
-    <span @click="navigate('/')" class="fdms-clickable">/</span>
-    <span v-for="path in paths">
-      <span>{{ path.separator }}</span>
-      <span @click="navigate(path.target)" class="fdms-clickable">{{ path.segment }}</span>
-    </span>
-  </span>
+  <nav v-if="doc" class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li><a @click="navigate('/')" class="fdms-clickable"><fdms-icon icon="home" style="position:relative; top:2px;"/></a></li>
+      <li v-for="path in paths">
+        <a @click="navigate(path.target)" class="fdms-clickable">{{ path.segment }}</a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>

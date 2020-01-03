@@ -1,6 +1,7 @@
 <template>
   <div>
-    <documents-list :docs="docs" :columns="columns">
+    <h1 class="title is-pulled-right">Tenants</h1>
+    <documents-list :docs="docs" :fields="fields">
       <template v-slot:custom-headers>
         <th>Actions</th>
       </template>
@@ -23,7 +24,7 @@ export default {
   data() {
   	return {
   		docs: [],
-  		columns:["id"]
+  		fields:["id"]
   	}
   },
   created() {
@@ -36,7 +37,7 @@ export default {
     	this.docs = await this.fdms_filter(body);
   	},
     delete_tenant_(tenant_id) {
-      this.busy_while(
+      this.fdms_busy_while(
         this.fdms_delete_tenant(tenant_id).then(() => {
             this.global_info(`Tenant ${tenant_id} deleted`);
             this.load();
@@ -46,7 +47,7 @@ export default {
       );
     },
     refresh_tenant_(tenant_id) {
-      this.busy_while(
+      this.fdms_busy_while(
         this.fdms_refresh_tenant(tenant_id).then(() => {
             this.global_info(`Tenant ${tenant_id} refreshed`);
             this.load();

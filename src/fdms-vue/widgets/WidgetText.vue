@@ -1,13 +1,13 @@
 <template>
   <span :class="{ 'fdms-clickable': is_link}"  @click="click">
     <span v-if="icon">
-        <font-awesome-icon :icon="icon" class="fdms-icon"/>
+        <fdms-icon :icon="icon" class="fdms-icon"/>
     </span>
     <span v-if="mode_view">
       {{ value }}
     </span>
     <span v-if="mode_edit">
-      <input :type="config.type" v-model="local_value"></input>
+      <input class="input" :type="config.type" v-model="local_value" :disabled="is_fdms_busy()"></input>
     </span>
   </span>
 </template>

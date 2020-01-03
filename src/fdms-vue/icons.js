@@ -13,7 +13,9 @@ import {
   faUsers,
   faUser,
   faSyncAlt,
-  faEdit
+  faEdit,
+  faBan,
+  faSave
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faPlusCircle,
@@ -29,6 +31,8 @@ library.add(
   faUsers,
   faUser,
   faSyncAlt,
-  faEdit
+  faEdit,
+  faBan,
+  faSave
 );
 
