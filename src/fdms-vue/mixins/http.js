@@ -1,5 +1,3 @@
-import bus from "../bus.js";
-
 import {
   VIEW_CONFIG,
   SCHEMA_ID,
@@ -9,7 +7,6 @@ import {
   FACETS,
   FACET_SHOW_IN_TREE
 } from "../constants.js";
-import state from "./state.js";
 import cache from "js-cache";
 
 
@@ -26,58 +23,53 @@ function toURI(base, tenant_id, params) {
 }
 
 export default {
+  computed: {
+    fdms_http() {
+      return this.fdms_store_get("http");
+    }
+  },
   methods: {
+    fdms_store_get(key) {
+      return this.$store.getters[`fdms/${key}`];
+    },
     _callHandler(handler, param) {
-      if (state.options.api[`on${handler}`]) {
-        state.options.api[`on${handler}`].bind(this)(param);
+      if (this.fdms_store_get("options").api[`on${handler}`]) {
+        this.fdms_store_get("options").api[`on${handler}`].bind(this)(param);
       }
     },
-    _handle(promise) {
-      return promise
-        .then(response => response.data)
-        .catch(e => {
-          this._callHandler(e.response.status, e);
-          throw e;
-        });
+    _handle(function_returning_http_promise) {
+      return this.fdms_after_init(() => {
+        var promise = function_returning_http_promise()
+          .then(response => response.data)
+          .catch(e => {
+            this._callHandler(e.response.status, e);
+            throw e;
+          });
+        return promise;
+      });
     },
     fdms_filter(params) {
-      let uri = toURI("/filter", state.fdms_tenant_id, params);
-      return this._handle(state.http.get(uri));
+      let uri = toURI("/filter", this.fdms_store_get("tenant_id"), params);
+      return this._handle(() => this.fdms_http.get(uri));
     },
-/*      fdms_sign_in(tenant_id, login, password) {
-      state.http = axios.create({
-        baseURL: options.api.baseURL,
-        timeout: options.api.timeout,
-        headers: options.api.headers,
-        auth: {
-          username: `${tenant_id}|${login}`,
-          password: password
-        }
-      });
-      return this.get_user();
-    },*/
     fdms_get_user() {
-      return state.http.get("/auth").then(response => {
+      return this.fdms_http.get("/auth").then(response => {
         var user = response.data;
-        state.fdms_initialized = true;
-        if (user.is_fdms_admin) state.fdms_tenant_id = state.options.api.tenant_master;
-        else state.fdms_tenant_id = user.tenant_id;
-        user.tenant_id = state.fdms_tenant_id;
-        return this._handle(state.http.get("/config")).then((config) => {
-          state.fdms_config = config;
-          bus.$emit("logged_in", user);
+        this.$store.commit("fdms/logged_in", user);
+        return this.fdms_http.get("/config").then(response => {
+          this.$store.commit("fdms/configure", response.data);
           return user;
         });
       });
     },
     fdms_create_tenant(tenant_id, drop) {
-      return this._handle(state.http.post("/tenants", { tenant_id, drop }));
+      return this._handle(() => this.fdms_http.post("/tenants", { tenant_id, drop }));
     },
     fdms_delete_tenant(tenant_id) {
-      return this._handle(state.http.delete(`/tenants/${tenant_id}`));
+      return this._handle(() => this.fdms_http.delete(`/tenants/${tenant_id}`));
     },
     fdms_refresh_tenant(tenant_id) {
-      return this._handle(state.http.put(`/tenants/${tenant_id}?items=views`));
+      return this._handle(() => this.fdms_http.put(`/tenants/${tenant_id}?items=views`));
     },
     fdms_get(doc_id, params) {
       if (typeof doc_id === "object") {
@@ -89,13 +81,13 @@ export default {
       more_params[MODIFIERS] = "with_permissions";
       params = Object.assign({}, params, more_params);
       if (!doc_id.startsWith("/")) doc_id = `/${doc_id}`;
-      return this._handle(
-        state.http.get(toURI(`/documents${doc_id}`, state.fdms_tenant_id, params))
+      return this._handle(() =>
+        this.fdms_http.get(toURI(`/documents${doc_id}`, this.fdms_store_get("tenant_id"), params))
       );
     },
     fdms_update(doc) {
       return this._handle(
-        state.http.put(toURI(`/documents${doc[PATH]}`, state.fdms_tenant_id), doc)
+        this.fdms_http.put(toURI(`/documents${doc[PATH]}`, this.fdms_store_get("tenant_id")), doc)
       );
     },
     fdms_get_tree_children(doc_id, params) {
@@ -107,15 +99,15 @@ export default {
       more_params[FACETS] = FACET_SHOW_IN_TREE;
       more_params[MODIFIERS] = "children,with_permissions";
       params = Object.assign({}, params, more_params);
-      return this._handle(
-        state.http.get(toURI(`/documents${doc_id}`, state.fdms_tenant_id, params))
+      return this._handle(() =>
+        this.fdms_http.get(toURI(`/documents${doc_id}`, this.fdms_store_get("tenant_id"), params))
       );
     },
     fdms_from_cache(key, func) {
       if (cache.get(key)) return cache.get(key);
       else {
         var value = func();
-        if (state.options.api.use_cache) cache.set(key, value, state.options.api.cache_ttl);
+        if (this.fdms_store_get("options").api.use_cache) cache.set(key, value, this.fdms_store_get("options").api.cache_ttl);
         return value;
       }
     },
@@ -150,7 +142,7 @@ export default {
     async fdms_get_schema_full(schema_id) {
       var schema = await this.fdms_get_schema(schema_id);
       if (schema) {
-        Object.assign(schema.properties, state.fdms_config.base_properties);
+        Object.assign(schema.properties, this.fdms_store_get("config").base_properties);
       }
       return schema;
     },

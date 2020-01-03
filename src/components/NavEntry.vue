@@ -26,20 +26,18 @@ export default {
       }
     };
   },
+  mounted() {
+    this.update_link_class(this.$route);
+  },
   watch: {
-    $route(val) {
-      this.link_class = {
-        "is-active": val.path === this.to,
-        link: true
-      };
+    $route(route) {
+      this.update_link_class(route);
     }
   },
   methods: {
-    computeLinkClass() {
+    update_link_class(route) {
       this.link_class = {
-        "is-active":
-          this.$refs.link &&
-          this.$refs.link.$el.classList.contains("router-link-active"),
+        "is-active": route.path === this.to,
         link: true
       };
     }

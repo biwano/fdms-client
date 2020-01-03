@@ -1,5 +1,4 @@
 import bus from "../bus.js";
-import state from "./state.js";
 import {
   PATH,
   PATH_SEGMENT,
@@ -28,32 +27,17 @@ export default {
       return doc && doc[PERMISSIONS] && doc[PERMISSIONS].includes("w");
     },
     fdms_after_init(func) {
-      if (state.fdms_initialized) func();
-      else {
-        bus.$on("logged_in", func);
-      }
-    },
-    fdms_log_be(level, args) {
-      var final_args = [`[FDMS] ${level} <${this.$options.name}>(${this._uid})`];
-      for (var i in args) {
-        final_args.push(args[i]);
-      }
-      console.log.apply(console, final_args);
-    },
-    fdms_warn() {
-      if (state.options.log.warn) this.fdms_log_be("WARNING", arguments);
-    },
-    fdms_info() {
-      if (state.options.log.info) this.fdms_log_be("INFO", arguments);
-    },
-    fdms_error() {
-      if (state.options.log.error) this.fdms_log_be("ERROR", arguments);
-    },
-    fdms_debug() {
-      if (state.options.log.debug) this.fdms_log_be("DEBUG", arguments);
-    },
-    fdms_trace() {
-      if (state.options.log.trace) this.fdms_log_be("TRACE", arguments);
+      return new Promise((resolve) => {
+        if (this.fdms_store_get("initialized")) resolve(func());
+        else {
+          this.$store.subscribe((mutation) => {
+            if (mutation.type === 'fdms/configure') {
+              var result = func();
+              resolve(result);
+            }
+          });
+        }
+      });
     },
     fdms_navigate(thing) {
       var path = this.fdms_as_path(thing);

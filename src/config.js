@@ -14,6 +14,6 @@ export default {
     }
   },
   log: {
-    error: true, warn: true, info: true, debug: true, trace: true
+    ERROR: true, WARNING: true, INFO: true, DEBUG: true, TRACE: true
   }
 };
