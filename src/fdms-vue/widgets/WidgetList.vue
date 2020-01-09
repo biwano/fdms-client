@@ -1,7 +1,7 @@
 <template>
   <span>
     <span v-if="docs.length">
-        <documents-list :docs="docs" :fields="config.fields"></documents-list>
+        <documents-list :docs="docs" :widgets="widget.widgets"></documents-list>
     </span>
   </span>
 </template>
@@ -22,13 +22,13 @@ export default {
     async widget_update() {
       var filter = {};
       this.docs = [];
-      if (this.config.filter && this.doc) {
-        for (var key in this.config.filter) {
-          filter[key] = this.fdms_interpolate(this.config.filter[key], { doc: this.doc });
+      if (this.widget.filter && this.doc) {
+        for (var key in this.widget.filter) {
+          filter[key] = this.fdms_interpolate(this.widget.filter[key], { doc: this.doc });
         }
         this.docs = await this.fdms_filter(filter);
         this.fdms_trace("List updated", this.docs);
-      } else this.fdms_trace("List not updated", this.doc, this.config.filter);
+      } else this.fdms_trace("List not updated", this.doc, this.widget.filter);
     }
   }
 };

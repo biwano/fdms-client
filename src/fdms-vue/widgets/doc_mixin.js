@@ -2,7 +2,6 @@ import { PATH } from "../constants.js";
 export default {
   props: {
     doc_id: [String, Object],
-    config: Object
   },
   data() {
     return {

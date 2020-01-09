@@ -48,7 +48,7 @@ export default {
           this.fdms_navigate(this.doc);
         } else {
         // It must be a string interpolate!
-          var path = this.fdms_interpolate(this.config.link, { doc: this.doc, model: this.value });
+          var path = this.fdms_interpolate(this.widget.link, { doc: this.doc, model: this.value });
           this.fdms_navigate(path);
         }
       }
@@ -60,26 +60,20 @@ export default {
 
     },
     makeWidget(val) {
-      var type = "";
-      var config = {};
-      if (typeof val == "string") type = "text";
+      widget = {}
+      if (typeof val == "string") widget.type = "text";
       else if (Array.isArray(val)) { 
-        type = "array";
-        config = {
-          display: "numbered_list",
+        var widget = {
+          type: "array",
+          display: "numbered_list with_hook",
           widget: {
             "type": "json",
-            "config": {},
           }
-        };
+        }
       }
-      else if (typeof val == "object") type = "json";
-      else type = "text";
-      return {
-        type,
-        mode: this.mode,
-        config
-      };
+      else if (typeof val == "object") widget.type = "json";
+      else widget.type = "text";
+      return widget;
     }
   },
   computed: {
@@ -105,11 +99,11 @@ export default {
   bottom: 0;
   left: 0;
   top: 0;
-  width: 5px;
-  border: 2px solid black;
+  width: 15px;
+  border: 1px solid grey;
   border-right-width: 0;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 .not_expanded {
   position: relative;
@@ -126,10 +120,10 @@ export default {
   left: 0;
   top: 0;
   width: 5px;
-  border: 2px solid black;
+  border: 1px solid grey;
   border-right-width: 0;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 .not_expanded:after {
   content: "";
@@ -138,10 +132,10 @@ export default {
   right: 0;
   top: 0;
   width: 5px;
-  border: 2px solid black;
+  border: 1px solid grey;
   border-left-width: 0;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 </style>

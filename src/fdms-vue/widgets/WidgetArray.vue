@@ -2,7 +2,7 @@
   <span>
     <ol :class="display_config">
       <li v-for="(entry, index) in value">
-        <widget-proxy :widget="config.widget" v-model="value[index]" :doc="doc" :mode="mode"></widget-proxy>      
+        <widget-proxy :widget="widget.widget" v-model="value[index]" :doc="doc" :mode="mode"></widget-proxy>      
       </li>
     </ol>
   </span>
@@ -27,7 +27,12 @@ export default {
   },
   computed: {
     display_config() {
-      return `fdms_${this.config.display}`;
+      var clazz = {};
+      var display = this.widget.display || "bulleted_list";
+      display.split(" ").forEach((cls) => {
+        clazz[`fdms_${cls}`] = true;
+      });
+      return clazz;
     }
   }
 };
@@ -40,9 +45,25 @@ export default {
   margin :0;
   padding-inline-start:0;
 }
-.fdms_numbered_lit {
+.fdms_numbered_list {
   display: block;
   margin :0;
   padding-inline-start:0;
+}
+.fdms_with_hook {
+  position: relative;
+  width: 100%;
+  margin-top: 2px;
+  padding-left: 25px;
+}
+.fdms_with_hook:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: 15px;
+  border: 1px solid grey;
+  border-right-width: 0;
 }
 </style>

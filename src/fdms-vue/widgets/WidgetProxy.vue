@@ -1,7 +1,7 @@
 <template>
   <span v-if="widget.type">
   <component
-    v-bind:is="`widget-${widget.type}`" v-model="local_value" :config="widget.config" :doc="doc" :mode="mode">
+    v-bind:is="`widget-${widget.type}`" v-model="local_value" :widget="widget" :doc="doc" :mode="mode">
   </component>
 </span>
 </template>

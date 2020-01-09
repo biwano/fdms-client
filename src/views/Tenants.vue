@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="title is-pulled-right">Tenants</h1>
-    <documents-list :docs="docs" :fields="fields">
+    <documents-list :docs="docs" :widgets="widgets">
       <template v-slot:custom-headers>
         <th>Actions</th>
       </template>
@@ -24,7 +24,7 @@ export default {
   data() {
   	return {
   		docs: [],
-  		fields:["id"]
+  		widgets:["id"]
   	}
   },
   created() {

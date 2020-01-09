@@ -6,6 +6,7 @@ export default {
         for (var i in args) {
           final_args.push(args[i]);
         }
+        if (this.$el) final_args.push(this.$el);
         console.log.apply(console, final_args);
       }
     },

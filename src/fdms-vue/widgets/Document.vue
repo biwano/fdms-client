@@ -1,5 +1,5 @@
 <template>
-  <div v-if="layout">
+  <div v-if="widgets">
     <div style="float:right">
       <span v-if="fdms_doc_is_writable(doc)" >
         <fdms-button @click="set_mode('edit')" icon="edit" v-if="is_view">Edit document</fdms-button>
@@ -11,9 +11,9 @@
     <select v-if="is_new">
     </select>
     <!-- Widgets -->
-    <div v-for="widget in layout">
-      <b v-if="widget.config.label">{{widget.config.label}} </b>
-      <widget-proxy :widget="widget" v-model="doc[widget.config.model]" :doc="doc" :mode="mode_"></widget-proxy>
+    <div v-for="widget in widgets">
+      <b v-if="widget.label">{{widget.label}} </b>
+      <widget-proxy :widget="widget" v-model="doc[widget.model]" :doc="doc" :mode="mode_"></widget-proxy>
       <br/>
     </div>
     <!-- Save document -->
@@ -71,21 +71,21 @@ export default {
     }
   },
   computed: {
-    layout: {
+    widgets: {
       get() {
-        var layout = [];
-        if (this.view_config && this.view_config.layout && this.schema) {
-          layout = this.view_config.layout;
-          for (var i in layout) {
-            layout[i] = this.fdms_configure_widget(layout[i], this.schema);
+        var widgets = [];
+        if (this.view_config && this.view_config.widgets && this.schema) {
+          widgets = this.view_config.widgets;
+          for (var i in widgets) {
+            widgets[i] = this.fdms_configure_widget(widgets[i], this.schema);
           }
-          this.fdms_trace("Layout computed", layout);
+          this.fdms_trace("Widgets computed", widgets);
         }
         else this.fdms_trace("Layout not computed yet.", "view config:", this.view_config, "schema", this.schema);
-        return layout;
+        return widgets;
       },
-      set(layout) {
-        this.layout = layout;
+      set(widgets) {
+        this.widgets = widgets;
       }
     },
     is_new() {

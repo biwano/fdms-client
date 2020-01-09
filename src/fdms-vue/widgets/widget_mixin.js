@@ -1,6 +1,6 @@
 import debounce from "lodash.debounce";
 export default {
-  props: ["value", "mode", "model", "config", "doc"],
+  props: ["value", "mode", "model", "widget", "doc"],
   data() {
     return {
       local_value: undefined
@@ -16,7 +16,7 @@ export default {
     doc() {
       this.debounced_widget_update();
     },
-    config() {
+    widget() {
       this.debounced_widget_update();
     }
   },
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     mode_edit() {
-      return this.mode === "edit" && this.config.readonly === undefined;
+      return this.mode === "edit" && this.widget.readonly === undefined;
     },
     mode_view() {
       return !this.mode_edit;

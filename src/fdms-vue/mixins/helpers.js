@@ -13,7 +13,7 @@ var widgets_auto_props = {
   boolean: { type: "boolean" },
   date: { type: "date" },
   json: { type: "json" },
-  email: { type: "text", config: { type: "email" } }
+  email: { type: "text", input: "email" }
 };
 export default {
   methods: {
@@ -54,47 +54,43 @@ export default {
     fdms_configure_widget(widget, schema) {
       if (typeof widget !== "object") {
         widget = {
-          auto: widget,
-          config: { }
+          auto: widget
         };
       }
       widget = Object.assign({}, widget);
-      widget.config = Object.assign({}, widget.config);
       if (widget.type == "children") {
-        widget.config.label = "Children";
+        widget.label = "Children";
         widget.type = "list";
-        widget.config.filter = {};
-        widget.config.filter[PARENT_UUID] = `{{doc.${DOCUMENT_UUID}}}`;
+        widget.filter = {};
+        widget.filter[PARENT_UUID] = `{{doc.${DOCUMENT_UUID}}}`;
         this.fdms_trace("'Children' widget auto configured", widget, prop);
       }
       if (widget.auto) {
         var model = widget.auto;
-        widget.config.model = model;
+        widget.model = model;
         if (schema && schema.properties) {
           var prop = schema.properties[model];
           if (prop) {
             while (prop.alias) {
-              widget.config.readonly = true;
+              widget.readonly = true;
               prop = schema.properties[prop.alias];
             }
             var auto_prop = widgets_auto_props[prop.type];
             if (!widget.type) widget.type = auto_prop.type;
-            Object.assign(widget.config, auto_prop.config);
+            Object.assign(widget, auto_prop.config);
             if (prop.list === true) {
               widget = {
                 type: "array",
-                config: {
-                  model,
-                  widget,
-                  label: model
-                }
+                model,
+                widget,
+                label: model
               };
             }
             this.fdms_trace("'auto' widget configured. schema: ", schema.id, "model: ", model, "type: ", prop.type, "=>", widget.type, widget);
           } else this.fdms_warn("Auto mapping failed: Unknown property :", widget.config.model, "for schema :", schema.id);
         }
-        if (!widget.config.label) {
-          widget.config.label = model;
+        if (!widget.label) {
+          widget.label = model;
         }
       }
       return widget;

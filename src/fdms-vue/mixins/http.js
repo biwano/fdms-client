@@ -48,6 +48,9 @@ export default {
         return promise;
       });
     },
+    _handle_busy(function_returning_http_promise) {
+      return this.fdms_busy_while(this._handle(function_returning_http_promise));
+    },
     fdms_filter(params) {
       let uri = toURI("/filter", this.fdms_store_get("tenant_id"), params);
       return this._handle(() => this.fdms_http.get(uri));
@@ -63,13 +66,13 @@ export default {
       });
     },
     fdms_create_tenant(tenant_id, drop) {
-      return this._handle(() => this.fdms_http.post("/tenants", { tenant_id, drop }));
+      return this._handle_busy(() => this.fdms_http.post("/tenants", { tenant_id, drop }));
     },
     fdms_delete_tenant(tenant_id) {
-      return this._handle(() => this.fdms_http.delete(`/tenants/${tenant_id}`));
+      return this._handle_busy(() => this.fdms_http.delete(`/tenants/${tenant_id}`));
     },
     fdms_refresh_tenant(tenant_id) {
-      return this._handle(() => this.fdms_http.put(`/tenants/${tenant_id}?items=views`));
+      return this._handle_busy(() => this.fdms_http.put(`/tenants/${tenant_id}?items=views`));
     },
     fdms_get(doc_id, params) {
       if (typeof doc_id === "object") {
@@ -86,7 +89,7 @@ export default {
       );
     },
     fdms_update(doc) {
-      return this._handle(
+      return this._handle_busy(
         this.fdms_http.put(toURI(`/documents${doc[PATH]}`, this.fdms_store_get("tenant_id")), doc)
       );
     },

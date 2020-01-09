@@ -7,7 +7,7 @@
       {{ value }}
     </span>
     <span v-if="mode_edit">
-      <input class="input" :type="config.type" v-model="local_value" :disabled="is_fdms_busy()"></input>
+      <input class="input" :type="widget.input" v-model="local_value" :disabled="is_fdms_busy()"></input>
     </span>
   </span>
 </template>
@@ -22,11 +22,11 @@ export default {
     click() {
       // link is True go to doc
       if (this.is_link == true) {
-        if (this.config.link == true) {
+        if (this.widget.link == true) {
           this.fdms_navigate(this.doc);
         } else {
         // It must be a string interpolate!
-          var path = this.fdms_interpolate(this.config.link, { doc: this.doc, model: this.value });
+          var path = this.fdms_interpolate(this.widget.link, { doc: this.doc, model: this.value });
           this.fdms_navigate(path);
         }
       }
@@ -34,10 +34,10 @@ export default {
   },
   computed: {
     icon() {
-        return this.config.icon;
+        return this.widget.icon;
     },
     is_link() {
-      return this.config.link ? true : false;
+      return this.widget.link ? true : false;
     }
   }
 };

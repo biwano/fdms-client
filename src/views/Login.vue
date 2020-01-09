@@ -1,15 +1,10 @@
 <template>
   <div>
   	<h1>Login</h1>
-    <form class="pure-form pure-form-stacked">
-	    <fieldset>
-	        <input type="text" placeholder="Login" v-model="login"/>
-	        <input type="password" placeholder="Password"  v-model="password"/>
+      <input class="input" type="text" placeholder="Login" v-model="login"/>
+      <input class="input" type="password" placeholder="Password"  v-model="password"/>
 
-	        <button  type="button" class="pure-button pure-button-primary" v-on:click="submit">Sign in</button>
-
-	    </fieldset>
-	  </form>
+      <fdms-button class="button"  type="button" v-on:click="submit">Sign in</fdms-button>
   </div>
 </template>
 
