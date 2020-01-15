@@ -67,7 +67,7 @@ export default {
   flex:1 1 auto;
 }
 #notifications {
-  position: absolute;
+  position: fixed;
   bottom: 0px;  
   width:100%;
 }

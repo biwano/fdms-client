@@ -16,8 +16,6 @@
       <widget-proxy :widget="widget" v-model="doc[widget.model]" :doc="doc" :mode="mode_"></widget-proxy>
       <br/>
     </div>
-    <!-- Save document -->
-
     <!-- Create children -->
     <fdms-icon v-if="!is_new" icon="plus-circle" class="fdms-big-icon fdms-clickable" @click="create_child"/>
   </div>
@@ -57,8 +55,6 @@ export default {
     },
     create_child() {
       this.fdms_bus().$emit("create_document_requested", this.path);
-      
-      
     },
     async save() {
       await this.fdms_update(this.doc);

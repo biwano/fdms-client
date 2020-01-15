@@ -3,7 +3,8 @@ export default {
   props: ["value", "mode", "model", "widget", "doc"],
   data() {
     return {
-      local_value: undefined
+      local_value: undefined,
+      initialized: false      
     };
   },
   watch: {
@@ -11,7 +12,7 @@ export default {
       this.local_value = val;
     },
     local_value(val) {
-      this.$emit("input", val);
+      if (this.initialized) this.$emit("input", val);
     },
     doc() {
       this.debounced_widget_update();
@@ -24,6 +25,7 @@ export default {
     this.local_value = this.value;
     this.debounced_widget_update = debounce(this.widget_update, 25);
     this.debounced_widget_update();
+    window.setTimeout(() => { this.initialized = true }, 1);
   },
   computed: {
     local_widget() {

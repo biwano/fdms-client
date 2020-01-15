@@ -7,29 +7,24 @@
     </span>
     <span v-if="expanded">
       <fdms-clickable-icon icon="caret-right" @click="unexpand" />
-      <div v-for="key in keys" class="expanded">
-        
-        <widget-text :doc="doc"  :value="key" >
-          </widget-text>
-          <!--
-        <widget-text :doc="doc" @input="keyChanged(key, $event)" :value="key" :mode="keyMode(key)"
-            @click="keySwitchMode(key)"
-            @submit="keySwitchMode(key)">
-          </widget-text>
-        -->
-          <!--
-        <span v-if="isInline(local_value[key])">:
-          <widget-proxy :widget="makeWidget(local_value[key])" :doc="doc" v-model="local_value[key]" :mode="mode"></widget-proxy></td>
-        </span>
-
-        <div v-else>
-        -->
-          <div class="children">
+      <div  class="expanded">
+        <div v-for="key in keys">
+          <b>
+          <widget-text :doc="doc" @input="keyChanged(key, $event)" :value="key" :mode="keyMode(key)"
+              @click="keySwitchMode(key)"
+              @submit="keySwitchMode(key)">
+            </widget-text>
+          </b>
+          <span v-if="isInline(local_value[key])">:
             <widget-proxy :widget="makeWidget(local_value[key])" :doc="doc" v-model="local_value[key]" :mode="mode"></widget-proxy></td>
+          </span>
+
+          <div v-else>
+            <div class="children">
+              <widget-proxy :widget="makeWidget(local_value[key])" :doc="doc" v-model="local_value[key]" :mode="mode"></widget-proxy></td>
+            </div>
           </div>
-          <!--
         </div>
-      -->
       </div>
     </span>
   </span>
@@ -61,7 +56,7 @@ export default {
     },
     isInline(val) {
       if (Array.isArray(val)) return false;
-      else if (typeof val === "object") return false;
+      else if (typeof val === "object") return true;
       else return true;
     },
     makeWidget(val) {
@@ -108,7 +103,7 @@ export default {
       else {
         this.key_statuses[key].mode = "edit";
       }
-      this.key_statuses = Object.assign({}, this.key_statuses)
+      this.key_statuses = Object.assign({}, this.key_statuses);
     }
   },
   computed: {

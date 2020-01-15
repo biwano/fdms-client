@@ -89,7 +89,7 @@ export default {
       );
     },
     fdms_update(doc) {
-      return this._handle_busy(
+      return this._handle_busy(() =>
         this.fdms_http.put(toURI(`/documents${doc[PATH]}`, this.fdms_store_get("tenant_id")), doc)
       );
     },
