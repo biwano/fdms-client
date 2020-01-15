@@ -8,15 +8,28 @@
     <span v-if="expanded">
       <fdms-clickable-icon icon="caret-right" @click="unexpand" />
       <div v-for="key in keys" class="expanded">
-        <div v-if="isInline(value[key])">
-          {{ key }}: <widget-proxy :widget="makeWidget(value[key])" :doc="doc" v-model="value[key]" :mode="mode"></widget-proxy></td>
-        </div>
+        
+        <widget-text :doc="doc"  :value="key" >
+          </widget-text>
+          <!--
+        <widget-text :doc="doc" @input="keyChanged(key, $event)" :value="key" :mode="keyMode(key)"
+            @click="keySwitchMode(key)"
+            @submit="keySwitchMode(key)">
+          </widget-text>
+        -->
+          <!--
+        <span v-if="isInline(local_value[key])">:
+          <widget-proxy :widget="makeWidget(local_value[key])" :doc="doc" v-model="local_value[key]" :mode="mode"></widget-proxy></td>
+        </span>
+
         <div v-else>
-          {{ key }}
+        -->
           <div class="children">
-            <widget-proxy :widget="makeWidget(value[key])" :doc="doc" v-model="value[key]" :mode="mode"></widget-proxy></td>
+            <widget-proxy :widget="makeWidget(local_value[key])" :doc="doc" v-model="local_value[key]" :mode="mode"></widget-proxy></td>
           </div>
+          <!--
         </div>
+      -->
       </div>
     </span>
   </span>
@@ -24,16 +37,21 @@
 
 <script>
 import widget_mixin from "./widget_mixin.js";
+import WidgetText from "./WidgetText.vue";
 
 export default {
   name: "WidgetJson",
   mixins: [widget_mixin],
   data() {
     return {
-      expanded: true
+      expanded: true,
+      key_statuses: {}
     }
   },
-  components: { WidgetProxy: () => import("./WidgetProxy.vue") },
+  components: { WidgetText, WidgetProxy: () => import("./WidgetProxy.vue") },
+  created() {
+    this.updateKeyStatuses();
+  },
   methods: {
     expand() {
       this.expanded = true;
@@ -41,23 +59,10 @@ export default {
     unexpand() {
       this.expanded = false;
     },
-    click() {
-      // link is True go to doc
-      if (this.is_link == true) {
-        if (this.config.link == true) {
-          this.fdms_navigate(this.doc);
-        } else {
-        // It must be a string interpolate!
-          var path = this.fdms_interpolate(this.widget.link, { doc: this.doc, model: this.value });
-          this.fdms_navigate(path);
-        }
-      }
-    },
     isInline(val) {
       if (Array.isArray(val)) return false;
       else if (typeof val === "object") return false;
       else return true;
-
     },
     makeWidget(val) {
       widget = {}
@@ -74,11 +79,41 @@ export default {
       else if (typeof val == "object") widget.type = "json";
       else widget.type = "text";
       return widget;
+    },
+    updateKeyStatuses() {
+      this.key_statuses = {};
+      Object.keys(this.local_value).forEach( key => {
+        //this.key_statuses[key] = {};
+        this.key_statuses[key] = { mode: "view", value: this.local_value[key] };
+      });
+    },
+    keyChanged(key, new_key) {
+      var val = this.local_value[key];
+      delete this.local_value[key];
+      this.local_value[new_key] = val;
+      this.local_value = Object.assign({}, this.local_value);
+
+      val = this.key_statuses[key];
+      delete this.key_statuses[key];
+      this.key_statuses[new_key] = val;
+      this.key_statuses = Object.assign({}, this.key_statuses);
+    },
+    keyMode(key) {
+      return this.key_statuses[key].mode == "edit" ? this.mode : "view";
+    },
+    keySwitchMode(key) {
+      if (this.key_statuses[key].mode == "edit") {
+        this.key_statuses[key].mode = "view";
+      } 
+      else {
+        this.key_statuses[key].mode = "edit";
+      }
+      this.key_statuses = Object.assign({}, this.key_statuses)
     }
   },
   computed: {
     keys() {
-      return Object.keys(this.value);
+      return Object.keys(this.local_value);
     }
   }
 };

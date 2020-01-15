@@ -3,11 +3,11 @@
     <span v-if="icon">
         <fdms-icon :icon="icon" class="fdms-icon"/>
     </span>
-    <span v-if="mode_view">
+    <span v-if="mode_view" @click="$emit('click')">
       {{ value }}
     </span>
-    <span v-if="mode_edit">
-      <input class="input" :type="widget.input" v-model="local_value" :disabled="is_fdms_busy()"></input>
+    <span v-if="mode_edit" @keyup.enter="$emit('submit', local_value)">
+      <input class="input" :type="local_widget.input" v-model="local_value" :disabled="is_fdms_busy()"></input>
     </span>
   </span>
 </template>
@@ -22,11 +22,11 @@ export default {
     click() {
       // link is True go to doc
       if (this.is_link == true) {
-        if (this.widget.link == true) {
+        if (this.local_widget.link == true) {
           this.fdms_navigate(this.doc);
         } else {
         // It must be a string interpolate!
-          var path = this.fdms_interpolate(this.widget.link, { doc: this.doc, model: this.value });
+          var path = this.fdms_interpolate(this.local_widget.link, { doc: this.doc, model: this.value });
           this.fdms_navigate(path);
         }
       }
@@ -34,10 +34,10 @@ export default {
   },
   computed: {
     icon() {
-        return this.widget.icon;
+        return this.local_widget.icon;
     },
     is_link() {
-      return this.widget.link ? true : false;
+      return this.local_widget.link ? true : false;
     }
   }
 };

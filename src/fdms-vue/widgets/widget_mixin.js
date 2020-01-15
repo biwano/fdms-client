@@ -26,12 +26,15 @@ export default {
     this.debounced_widget_update();
   },
   computed: {
+    local_widget() {
+      return this.widget || {};
+    },
     mode_edit() {
-      return this.mode === "edit" && this.widget.readonly === undefined;
+      return this.mode === "edit" && this.local_widget.readonly === undefined;
     },
     mode_view() {
       return !this.mode_edit;
-    }
+    },
   },
   methods: {
     widget_update() {}
