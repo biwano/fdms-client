@@ -11,11 +11,14 @@
         <div v-for="key in keys">
           <b>
           <widget-text :doc="doc" @input="keyChanged(key, $event)" :value="key" :mode="keyMode(key)"
-              @click="keySwitchMode(key)"
-              @submit="keySwitchMode(key)">
+              :clickable="!mode_view"
+              :ref="key"
+              @click="keySwitchMode(key, 'edit')"
+              @submit="keySwitchMode(key, 'view')">
             </widget-text>
           </b>
-          <span v-if="isInline(local_value[key])">:
+          <span v-if="isInline(local_value[key])">
+            <span v-if="mode_view">:</span>
             <widget-proxy :widget="makeWidget(local_value[key])" :doc="doc" v-model="local_value[key]" :mode="mode"></widget-proxy></td>
           </span>
 
@@ -96,14 +99,15 @@ export default {
     keyMode(key) {
       return this.key_statuses[key].mode == "edit" ? this.mode : "view";
     },
-    keySwitchMode(key) {
-      if (this.key_statuses[key].mode == "edit") {
-        this.key_statuses[key].mode = "view";
-      } 
-      else {
-        this.key_statuses[key].mode = "edit";
+    keySwitchMode(key, mode) {
+      if (mode === undefined) {
+          mode = this.key_statuses[key].mode == "edit" ? "view" : "edit";
       }
+      this.key_statuses[key].mode = mode; 
       this.key_statuses = Object.assign({}, this.key_statuses);
+      if (mode==='edit') {
+        this.$refs[key][0].focus();
+      }
     }
   },
   computed: {
